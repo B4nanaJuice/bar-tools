@@ -1,21 +1,19 @@
-import os
 from flask import Flask
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
-migrate = Migrate()
+from app.cli import seed
+from app.database import init_db
 
 def create_app():
     app = Flask(__name__)
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
-
-    db.init_app(app)
-    migrate.init_app(app, db)
+    init_db(app = app)
 
     from app.routes import main
+    from app.models import CocktailIngredient, CocktailTag, Cocktail, Ingredient, OrderItem, Order, Tag
 
+    # Blueprints
     app.register_blueprint(main)
+
+    # CLI Commands
+    app.cli.add_command(seed)
 
     return app

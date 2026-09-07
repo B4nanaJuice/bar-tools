@@ -1,4 +1,4 @@
-from app import db
+from app.database import db
 
 class CocktailIngredient(db.Model):
     __tablename__: str = "cocktail_ingredients"

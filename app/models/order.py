@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 
-from app import db
-
+from app.database import db
 
 class Order(db.Model):
     __tablename__ = "orders"

@@ -1,5 +1,4 @@
-from app import db
-
+from app.database import db
 
 class OrderItem(db.Model):
     __tablename__ = "order_items"

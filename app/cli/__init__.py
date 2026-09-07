@@ -1,0 +1,1 @@
+from app.cli.seed import seed

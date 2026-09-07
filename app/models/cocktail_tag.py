@@ -1,5 +1,4 @@
-from app import db
-
+from app.database import db
 
 class CocktailTag(db.Model):
     __tablename__ = "cocktail_tags"
