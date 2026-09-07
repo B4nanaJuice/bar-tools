@@ -1,0 +1,99 @@
+{
+    "cocktails": [
+        {
+            "name": "Mojito",
+            "description": "L'incontournable Cubain",
+            "ingredients": [
+                ["Rhum blanc", 5, "cl"],
+                ["Sucre", 5, "g"],
+                ["Citron vert", 0.5, ""],
+                ["Feuilles de menthe", 8, "feuilles"],
+                ["Eau gazeuse", 12, "cl"]
+            ],
+            "tags": ["Classique", "Frais", "Pétillant"]
+        }, {
+            "name": "Bellini",
+            "description": "Hommage à la peinture Vénitienne",
+            "ingredients": [
+                ["Purée de pêches", 3, "cl"],
+                ["Prosecco", 10, "cl"]
+            ],
+            "tags": ["Pétillant"]
+        }, {
+            "name": "French Martini",
+            "description": "Pourtant pas si français",
+            "ingredients": [
+                ["Vodka", 5, "cl"],
+                ["Liqueur de Chambord", 1.5, "cl"],
+                ["Jus d'ananas", 2.5, "cl"]
+            ],
+            "tags": []
+        }, {
+            "name": "Green Beast",
+            "description": "Le punch à l'Absinthe",
+            "ingredients": [
+                ["Absinthe", 2, "cl"],
+                ["Sirop simple", 2, "cl"],
+                ["Jus de citron vert", 2, "cl"],
+                ["Eau", 8, "cl"]
+            ],
+            "tags": ["Shot"]
+        }, {
+            "name": "Cosmopolitan",
+            "description": "Le plus glamour des cocktails",
+            "ingredients": [
+                ["Vodka", 3, "cl"],
+                ["Triple Sec", 3, "cl"],
+                ["Jus de cranberry", 3, "cl"],
+                ["Jus de citron vert", 1.5, "cl"]
+            ],
+            "tags": ["Short"]
+        }, {
+            "name": "Ti Punch",
+            "description": "La saveur des Antilles",
+            "ingredients": [
+                ["Rhum blanc", 5, "cl"],
+                ["Citron vert", 0.5, ""],
+                ["Sucre", 1, "cc"]
+            ],
+            "tags": []
+        }, {
+            "name": "Piña Colada",
+            "description": "Cocktail national à Porto Rico",
+            "ingredients": [
+                ["Rhum blanc", 2.5, "cl"],
+                ["Rhum ambré", 2.5, "cl"],
+                ["Crème de coco", 3, "cl"],
+                ["Jus d'ananas", 6, "cl"]
+            ],
+            "tags": []
+        }, {
+            "name": "Cuba Libre",
+            "description": "Ne l'appelez plus Rhum-Coca",
+            "ingredients": [
+                ["Rhum blanc", 5, "cl"],
+                ["Cola", 10, "cl"],
+                ["Jus de citron vert", 1, "cl"]
+            ],
+            "tags": []
+        }, {
+            "name": "Caïpirinha",
+            "description": "Made is Brazil",
+            "ingredients": [
+                ["Cachaça", 5, "cl"],
+                ["Citron vert", 0.5, ""],
+                ["Sucre", 1, "cs"]
+            ],
+            "tags": ["Fort"]
+        }, {
+            "name": "Aperol Spritz",
+            "description": "Le plus prisé des apéritifs italiens",
+            "ingredients": [
+                ["Aperol", 4, "cl"],
+                ["Prosecco", 6, "cl"],
+                ["Eau gazeuse", 2, "cl"]
+            ],
+            "tags": []
+        }
+    ]
+}
