@@ -1,0 +1,1 @@
+from app.routes.home import page as home_page
