@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Cocktails{% endblock %}
+
+{% block content %}
+    <h1>Cocktails</h1>
+        <ul>
+        {% for cocktail in pagination %}
+            <li>
+                <a href="{{ url_for('cocktail_profile.cocktail_profile', cocktail_name = cocktail.name) }}">{{ cocktail.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="page-items">
+        {{ pagination.first }} - {{ pagination.last }} of {{ pagination.total }}
+    </div>
+    <div class=pagination>
+        {% for page in pagination.iter_pages() %}
+            {% if page %}
+                <strong>{{ page }}</strong>
+            {% else %}
+                <span class="ellipsis">…</span>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

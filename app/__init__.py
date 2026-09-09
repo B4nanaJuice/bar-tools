@@ -7,11 +7,12 @@ def create_app():
     app = Flask(__name__)
     init_db(app = app)
 
-    from app.routes import home_page
+    from app.routes import home_page, cocktail_profile
     from app.models import CocktailIngredient, CocktailTag, Cocktail, Ingredient, OrderItem, Order, Tag
 
     # Blueprints
     app.register_blueprint(home_page)
+    app.register_blueprint(cocktail_profile)
 
     # CLI Commands
     app.cli.add_command(seed)
