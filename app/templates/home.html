@@ -7,7 +7,7 @@
         <ul>
         {% for cocktail in pagination %}
             <li>
-                <a href="{{ url_for('cocktail_profile.cocktail_profile', cocktail_name = cocktail.name) }}">{{ cocktail.name }}</a>
+                <a href="{{ url_for('cocktail_profile.cocktail_profile', cocktail_id = cocktail.id) }}">{{ cocktail.name }}</a>
             </li>
         {% endfor %}
     </ul>
