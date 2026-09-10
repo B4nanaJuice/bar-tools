@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}{{ cocktail.name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ cocktail.name }}</h1>
+    <h2>Ingrédients</h2>
+    <ul>
+        {% for ing in cocktail.ingredient_associations %}
+            <li>{{ ing.ingredient.name }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Tags</h2>
+    <ul>
+        {% for tag in cocktail.tag_associations %}
+            <li>{{ tag.tag.name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

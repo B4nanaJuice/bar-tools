@@ -10,4 +10,4 @@ def cocktail_profile(cocktail_id: int):
 
     cocktail = db.get_or_404(Cocktail, cocktail_id)
     
-    return f"{cocktail.name}"
+    return render_template("cocktail.html", cocktail = cocktail)
