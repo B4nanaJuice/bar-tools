@@ -4,6 +4,7 @@
 
 {% block content %}
     <h1>{{ cocktail.name }}</h1>
+    <p>{{ cocktail.description }}</p>
     <h2>Ingrédients</h2>
     <ul>
         {% for ing in cocktail.ingredient_associations %}
