@@ -3,6 +3,20 @@
 {% block title %}Cocktails{% endblock %}
 
 {% block content %}
+    <label for="ing">Ingredients</label>
+    <select name="ing" id="ing">
+        {% for ingredient in ingredients %}
+            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="tag">Tags</label>
+    <select name="tag" id="tag">
+        {% for tag in tags %}
+            <option value="{{ tag.id }}">{{ tag.name }}</option>
+        {% endfor %}
+    </select>
+
     <h1>Cocktails</h1>
         <ul>
         {% for cocktail in pagination %}
