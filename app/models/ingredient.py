@@ -6,6 +6,7 @@ class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key = True)
 
     name = db.Column(db.String(100), nullable = False, unique = True)
+    # is_available = db.Column(db.Boolean, nullable = False, default = False)
 
     cocktail_associations = db.relationship("CocktailIngredient", back_populates = "ingredient", cascade = "all, delete-orphan")
 

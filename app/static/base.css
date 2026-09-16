@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Inria+Serif:wght@300;400;700&family=Unna:wght@400;700&display=swap');
+
+:root {
+    /* Colors */
+    --coffee-bean: #1B1107;
+    --camel: #B49272;
+    --khaki-beige: #C6AD91;
+    --champagne-mist: #EFDFC4;
+    --ghost-white: #FCF9FE;
+
+    /* Text */
+    --inria: "Inria Serif", serif;
+    --unna: "Unna", serif;
+    --light: 300;
+    --regular: 400;
+    --bold: 700;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.muted {
+    opacity: 0.1;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button.muted:hover {
+    cursor: not-allowed;
+}
+
+/* HERO SECTION */
+.hero {
+    background: var(--coffee-bean);
+    height: 100vh;
+    width: 100vw;
+    color: var(--ghost-white);
+    padding-top: 23vh;
+}
+
+.hero * {
+    font-family: var(--unna);
+}
+
+.hero-content, .body-content, .footer-content {
+    max-width: 1248px;
+    margin: auto;
+}
+
+.hero-title {
+    font-size: 112px;
+    width: 56%;
+}
+
+.hero-description {
+    width: 48%;
+    font-size: 32px;
+}
+
+.hero-cta {
+    background: var(--camel);
+    color: var(--coffee-bean);
+    padding: 16px;
+    margin: 64px 0;
+    font-size: 32px;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+}
+
+.hero-cta svg {
+    margin-left: 24px;
+    transition: transform .3s ease;
+}
+
+.hero-cta:hover svg {
+    transform: translateY(5px);
+}
+
+.hero-stats {
+    display: flex;
+    flex-direction: row;
+    gap: 64px;
+}
+
+.hero-stats .number {
+    font-size: 36px;
+}
+
+.hero-stats .stat-desc {
+    font-size: 24px;
+}
+
+.hero-background {
+    position: absolute;
+    top: 192px;
+    right: 0px;
+}
+
+.hero-background p {
+    font-size: 300px;
+    font-weight: var(--bold);
+    color: rgba(from var(--camel) r g b/0.05);
+    text-align: right;
+    letter-spacing: 24px;
+    margin-top: -96px;
+    user-select: none;
+}
+
+/* BODY SECTION */
+.body {
+    background: var(--champagne-mist);
+    min-height: 100vh;
+    padding-top: 192px;
+    padding-bottom: 96px;
+}
+
+.cocktails {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-row-gap: 64px;
+}
+
+.cocktail-card {
+    width: 320px;
+    border: solid var(--coffee-bean) 2px;
+    position: relative;
+    margin: auto;
+    background: linear-gradient(180deg, var(--coffee-bean) 50%, var(--champagne-mist) 50%);
+}
+
+.cocktail-card > img {
+    width: 220px;
+    height: 220px;
+    border: solid var(--champagne-mist) 10px;
+    margin: 40px 40px 0 40px;
+    background: var(--ghost-white);
+}
+
+.card-title {
+    margin: 10px 0 20px 0;
+    font-family: var(--inria);
+    font-size: 36px;
+    text-align: center;
+}
+
+.card-cta {
+    background: var(--camel);
+    color: var(--coffee-bean);
+    width: 100%;
+    border: none;
+    border-top: solid var(--coffee-bean) 2px;
+    font-family: var(--inria);
+    font-size: 24px;
+    padding: 16px 0px;
+}
+
+.pagination {
+    margin-top: 96px;
+    display: flex;
+    flex-direction: row;
+    gap: 48px;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination > button {
+    width: 72px;
+    height: 72px;
+    border: solid var(--coffee-bean) 2px;
+    background: var(--coffee-bean);
+}
+
+.pagination-before svg {
+    transition: transform .3s ease;
+}
+
+.pagination-before:not(.muted):hover svg {
+    transform: translateX(-5px);
+}
+
+.pagination-after svg {
+    transition: transform .3s ease;
+}
+
+.pagination-after:not(.muted):hover svg {
+    transform: translateX(5px);
+}
+
+/* FOOTER SECTION */
+.footer {
+    background: var(--coffee-bean);
+    padding: 96px 0;
+    color: var(--ghost-white);
+}
+
+.footer > hr {
+    border: solid var(--ghost-white) 1px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-left: solid var(--ghost-white) 2px;
+    border-right: solid var(--ghost-white) 2px;
+}
+
+.footer-info {
+    padding: 24px;
+}
+
+.footer-info:first-child {
+    border-right: solid var(--ghost-white) 2px;
+}
+
+.footer-info-title {
+    font-size: 48px;
+    font-family: var(--inria);
+    text-align: center;
+}
+
+.footer-info-desc {
+    font-size: 32px;
+    font-family: var(--inria);
+    text-align: center;
+}
+
+.footer > p {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 24px;
+    font-family: var(--inria);
+}

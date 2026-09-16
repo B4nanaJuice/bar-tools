@@ -65,6 +65,8 @@ def seed():
 
             db.session.add(cocktail)
             db.session.flush()
+        else:
+            continue
 
         for ingredient_name, quantity, unit in cocktail_data["ingredients"]:
             ingredient = ingredients[ingredient_name]

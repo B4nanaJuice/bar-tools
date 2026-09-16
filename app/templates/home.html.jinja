@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'navbar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'popup.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'notification.css') }}">
+        <title>Cocktails - La niche</title>
+    </head>
+    <body>
+
+        <div class="notifications">
+            <!-- <div class="notification notification-success">
+                <button class="icon-only" onclick="this.parentElement.remove();">
+                    <svg width="20" height="20" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <h2 class="notification-title">Notification success</h2>
+                <p class="notification-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div> -->
+            <!-- <div class="notification notification-error">
+                <button class="icon-only" onclick="this.parentElement.remove();">
+                    <svg width="20" height="20" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <h2 class="notification-title">Notification error</h2>
+                <p class="notification-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div> -->
+        </div>
+
+        <script>
+            function createNotification(type, title, description) {
+
+                let notification = document.createElement('div');
+                notification.classList.add('notification');
+                notification.classList.add(`notification-${type}`);
+
+                notification.innerHTML = `
+                    <button class="icon-only" onclick="this.parentElement.remove();">
+                        <svg width="20" height="20" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                `;
+
+                let notificationTitle = document.createElement('h2');
+                notificationTitle.classList.add('notification-title');
+                notificationTitle.innerText = title;
+
+                let notificationDesc = document.createElement('p');
+                notificationDesc.classList.add('notification-description');
+                notificationDesc.innerText = description;
+
+                notification.appendChild(notificationTitle);
+                notification.appendChild(notificationDesc);
+
+                document.querySelector('.notifications').appendChild(notification);
+
+            }
+        </script>
+
+        <div class="popup">
+            <div class="popup-content">
+                <button class="icon-only" onclick="document.querySelector('.popup').classList.remove('popup-open');">
+                    <svg width="24" height="24" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <h1 class="popup-title">This is a title</h1>
+                <p class="popup-description">This is a description</p>
+                <div class="popup-row">
+                    <button class="secondary-button" onclick="document.querySelector('.popup').classList.remove('popup-open');">
+                        Annuler
+                        <svg width="24" height="24" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="primary-button">
+                        Valider
+                        <svg width="24" height="24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M33 1L11 23L1 13" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="popup-background" onclick="document.querySelector('.popup').classList.remove('popup-open');"></div>
+        </div>
+
+        <div class="hero">
+            <div class="navbar">
+                <p class="navbar-title">La niche</p>
+                <div class="right">
+                    <button class="toggle-navbar-for-search icon-only" onclick="document.querySelector('.navbar').classList.toggle('navbar-for-search'); document.querySelector('.navbar').classList.remove('navbar-for-cart');">
+                        <svg width="40" height="40" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M37 37L28.3 28.3M33 17C33 25.8366 25.8366 33 17 33C8.16344 33 1 25.8366 1 17C1 8.16344 8.16344 1 17 1C25.8366 1 33 8.16344 33 17Z" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div style="margin: 0 24px; border: solid var(--ghost-white) 1px; height: 48px;"></div>
+                    <button class="toggle-navbar-for-cart icon-only" onclick="document.querySelector('.navbar').classList.toggle('navbar-for-cart'); document.querySelector('.navbar').classList.remove('navbar-for-search');">
+                        <svg width="40" height="40" viewBox="0 0 38 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M37 9V37C37 38.0609 36.5786 39.0783 35.8284 39.8284C35.0783 40.5786 34.0609 41 33 41H5C3.93913 41 2.92172 40.5786 2.17157 39.8284C1.42143 39.0783 1 38.0609 1 37V9L7 1H31L37 9ZM1 9H37M27 17C27 19.1217 26.1571 21.1566 24.6569 22.6569C23.1566 24.1571 21.1217 25 19 25C16.8783 25 14.8434 24.1571 13.3431 22.6569C11.8429 21.1566 11 19.1217 11 17" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="navbar-search">
+
+                    <div class="ingredient-search">
+                        <h1 class="search-title">Ingrédients</h1>
+                        <div class="list ingredient-list"></div>
+                        
+                        <select name="ingredient-search-select" id="ingredient-search-select" onchange="addTagToSearch(this, 'ingredient')">
+                            <option selected hidden disabled>Choisir...</option>
+                            {% for ingredient in ingredients %}
+                                <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <script>
+                            function addTagToSearch(selectNode, tagType) {
+
+                                let tag = document.createElement('span');
+                                tag.classList.add(tagType);
+                                tag.id = selectNode.value;
+                                tag.index = selectNode.selectedIndex;
+                                tag.innerText = selectNode.options[selectNode.selectedIndex].text;
+
+                                tag.onclick = function(e) {
+                                    selectNode.options[e.target.index].hidden = null;
+                                    e.target.remove(); 
+                                };
+                                selectNode.options[selectNode.selectedIndex].hidden = "hidden";
+                                selectNode.selectedIndex = 0;
+
+                                document.querySelector(`.${tagType}-list`).appendChild(tag);
+                            }
+                        </script>
+                    </div>
+
+                    <div class="tag-search">
+                        <h1 class="search-title">Tags</h1>
+                        <div class="list tag-list"></div>
+
+                        <select name="tag-search-select" id="tag-search-select" onchange="addTagToSearch(this, 'tag')">
+                            <option selected hidden disabled>Choisir...</option>
+                            {% for tag in tags %}
+                                <option value="{{ tag.id }}">{{ tag.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="name-search">
+                        <h1 class="search-title">Nom</h1>
+                        <input type="text">
+                    </div>
+
+                    <div class="search-action">
+                        <button onclick="startSearch();">
+                            Rechercher
+                            <svg width="40" height="40" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M37 37L28.3 28.3M33 17C33 25.8366 25.8366 33 17 33C8.16344 33 1 25.8366 1 17C1 8.16344 8.16344 1 17 1C25.8366 1 33 8.16344 33 17Z" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+
+                        <script>
+                            function startSearch() {
+                                
+                                let ingredients = [...document.querySelector('.ingredient-list').querySelectorAll('span')].map(c => c.id);
+                                let tags = [...document.querySelector('.tag-list').querySelectorAll('span')].map(c => c.id);
+                                let name = document.querySelector('.name-search input').value;
+
+                                let target = new URL(window.location);
+
+                                ingredients.length != 0 ? target.searchParams.set('ingredients', ingredients.join(',')) : target.searchParams.delete('ingredients');
+                                tags.length != 0 ? target.searchParams.set('tags', tags.join(',')) : target.searchParams.delete('tags');
+                                name != "" ? target.searchParams.set('name', name) : target.searchParams.delete('name');
+
+                                window.location = target;
+
+                            }
+                        </script>
+                    </div>
+
+                </div>
+
+                <div class="navbar-cart">
+                    <table>
+                        <tr>
+                            <th>Cocktail</th>
+                            <th>Quantité</th>
+                            <th>Supprimer</th>
+                        </tr>
+                    </table>
+
+                    <div class="form-row">
+                        <label for="order-name" class="order-name">
+                            Nom :
+                            <input type="text" id="order-name">
+                        </label>
+                        <button class="place-order" onclick="placeOrder();">Placer la commande</button>
+                    </div>
+
+                    <script>
+                            function placeOrder() {
+                                
+                                if (localStorage.length < 1) {
+                                    createNotification("error", "Commande vide", "Il faut sélectionner au moins 1 cocktail pour pouvoir passer commande.");
+                                    return;
+                                }
+
+                                let name = document.querySelector('.order-name input').value;
+                                if (name == "") {
+                                    createNotification("error", "Champ vide", "Il faut indiquer un nom, sinon comment savoir que c'est ta commande ?");
+                                    return;
+                                }
+
+                                document.querySelector('.popup-title').innerText = "Valider la commande ?";
+                                document.querySelector('.popup-description').innerText = "order items here";
+
+                                document.querySelector('.popup-content .primary-button').onclick = (e) => {
+                                    let order = { name: name };
+                                    for (let i = 0; i < localStorage.length; i++) {
+                                        let key = localStorage.key(i);
+                                        let cocktailId = key.split('_')[0];
+                                        let quantity = localStorage.getItem(key);
+
+                                        order[cocktailId] = quantity;
+                                        localStorage.removeItem(key);
+                                    }
+
+                                    // Send command to api
+                                    (async () => {
+                                        const rawResponse = await fetch('{{ url_for("api.send_order") }}', {
+                                            method: "POST",
+                                            headers: {
+                                                'Accept': 'application/json',
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify(order)
+                                        });
+
+                                        const content = await rawResponse.json();
+
+                                        if (rawResponse.status == 200) {
+                                            createNotification("success", "Commande passée", "Ta commande a bien été validée. Attends un peu et les boissons arriveront à toi !");
+                                            document.querySelector('.navbar').classList.remove('navbar-for-cart');
+                                            document.querySelector('.order-name input').value = '';
+                                            refreshOrderTable();
+                                        } else {
+                                            createNotification("error", "Oups", content.message);
+                                        }
+                                    })();
+
+                                    document.querySelector('.popup').classList.remove('popup-open');
+                                }
+
+                                document.querySelector('.popup').classList.add('popup-open');
+                            }
+                        </script>
+                </div>
+            </div>
+
+            <div class="hero-content">
+                <h1 class="hero-title">Hero Section Title</h1>
+                <p class="hero-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+                <button class="hero-cta" onclick="window.scroll({top: document.querySelector('.body').getBoundingClientRect().top + window.scrollY, behavior: 'smooth'});">
+                    Voir la carte 
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2L16 30M2 16L16 30L30 16" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <p class="number">8+</p>
+                        <p class="stat-desc">Cocktails</p>
+                    </div>
+                    <div class="stat">
+                        <p class="number">10+</p>
+                        <p class="stat-desc">Verres servis</p>
+                    </div>
+                    <div class="stat">
+                        <p class="number">1</p>
+                        <p class="stat-desc">Client satisfait (moi)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-background">
+                <p>Coffee</p>
+                <p>Drinks</p>
+                <p>Cocktail</p>
+            </div>
+        </div>
+
+        <div class="body">
+            <div class="body-content">
+                <div class="cocktails">
+                    {% for cocktail in pagination %}
+                        <div class="cocktail-card">
+                            {# <img src="{{ url_for('static', f'img/{cocktail.name}.png') }}" width="128" height="128"> #}
+                            <img src="" width="128" height="128">
+                            <h1 class="card-title">{{ cocktail.name }}</h1>
+                            <button class="card-cta" onclick="showCocktailDetails('{{ cocktail.name }}', {{ cocktail.id }}, [], [])">Détails</button>
+                        </div>
+                    {% endfor %}
+
+                    <script>
+                        function showCocktailDetails(cocktailName, cocktailId, cocktailTags, cocktailIngredients) {
+                            document.querySelector('.popup-title').innerText = cocktailName;
+                            document.querySelector('.popup-description').innerText = cocktailIngredients;
+
+                            document.querySelector('.popup-content .primary-button').onclick = (e) => {
+                                addCocktailToOrder(cocktailName, cocktailId);
+                                document.querySelector('.popup').classList.remove('popup-open');
+                            }
+
+                            document.querySelector('.popup').classList.add('popup-open');
+                        }
+
+                        function addCocktailToOrder(cocktailName, cocktailId) {
+                            let key = `${cocktailId}_${cocktailName}`;
+                            let newQuantity = parseInt(localStorage.getItem(key) || 0) + 1;
+                            localStorage.setItem(key, newQuantity);
+
+                            refreshOrderTable();
+                        }
+
+                        function refreshOrderTable() {
+
+                            let orderTable = document.querySelector('.navbar-cart table');
+                            orderTable.innerHTML = `
+                                <tr>
+                                    <th>Cocktail</th>
+                                    <th>Quantité</th>
+                                    <th>Supprimer</th>
+                                </tr>
+                            `;
+
+                            for (let i = 0; i < localStorage.length; i++) {
+
+                                let key = localStorage.key(i);
+                                let [cocktailId, cocktailName] = key.split('_');
+                                let quantity = parseInt(localStorage.getItem(key) || 1);
+
+                                let tableRow = document.createElement('tr');
+
+                                tableRow.innerHTML = `
+                                    <td>${cocktailName}</td>
+                                    <td>
+                                        <div>
+                                            <button class="${quantity == 1 ? 'muted' : ''} icon-only" onclick="removeCocktailQuantity('${key}')">
+                                                <svg width="16" height="2" viewBox="0 0 16 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1 1H15" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </button>
+                                            <p class="order-quantity">${quantity}</p>
+                                            <button class="icon-only" onclick="addCocktailQuantity('${key}')">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M8 1V15M1 8H15" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <button class="icon-only" onclick="removeCocktailFromOrder('${key}')">
+                                                <svg width="24" height="24" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1 5H3M3 5H19M3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H15C15.5304 21 16.0391 20.7893 16.4142 20.4142C16.7893 20.0391 17 19.5304 17 19V5M6 5V3C6 2.46957 6.21071 1.96086 6.58579 1.58579C6.96086 1.21071 7.46957 1 8 1H12C12.5304 1 13.0391 1.21071 13.4142 1.58579C13.7893 1.96086 14 2.46957 14 3V5M8 10V16M12 10V16" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                `;
+
+                                orderTable.appendChild(tableRow);
+                            }
+                        }
+
+                        refreshOrderTable();
+
+                        function addCocktailQuantity(key) {
+                            let newQuantity = parseInt(localStorage.getItem(key) || 0) + 1;
+                            localStorage.setItem(key, newQuantity);
+
+                            refreshOrderTable();
+                        }
+
+                        function removeCocktailQuantity(key) {
+                            let newQuantity = parseInt(localStorage.getItem(key) || 0) - 1;
+                            localStorage.setItem(key, newQuantity < 1 ? 1 : newQuantity);
+
+                            refreshOrderTable();
+                        }
+
+                        function removeCocktailFromOrder(key) {
+                            localStorage.removeItem(key)
+                            refreshOrderTable();
+                        }
+                    </script>
+                </div>
+
+                <div class="pagination">
+                    <button class="pagination-before {{ 'muted' if pagination.page == 1 else '' }}">
+                        <svg width="32" height="32" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M29 15H1M15 1L1 15L15 29" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="page-items">
+                        {{ pagination.first }} - {{ pagination.last }} sur {{ pagination.total }}
+                    </div>
+
+                    <button class="pagination-after {{ 'muted' if pagination.page == pagination.pages else '' }}">
+                        <svg width="32" height="32" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 15H29M15 29L29 15L15 1" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <hr>
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h1 class="footer-info-title">How to ?</h1>
+                    <p class="footer-info-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="footer-info">
+                    <h1 class="footer-info-title">Can't decide ?</h1>
+                    <p class="footer-info-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+            <hr>
+            <p>Too lazy to setup a copyright - MxW</p>
+        </div>
+
+    </body>
+</html>

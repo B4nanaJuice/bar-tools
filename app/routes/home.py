@@ -12,4 +12,4 @@ def index():
     tags = Tag.query.all()
     ingredients = Ingredient.query.all()
     
-    return render_template("home.html", pagination = page, tags = tags, ingredients = ingredients)
+    return render_template("home.html.jinja", pagination = page, tags = tags, ingredients = ingredients)
