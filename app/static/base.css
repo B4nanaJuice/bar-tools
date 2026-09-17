@@ -19,6 +19,7 @@
 * {
     margin: 0;
     padding: 0;
+    scrollbar-width: thin;
 }
 
 button {
@@ -43,7 +44,6 @@ button.muted:hover {
 .hero {
     background: var(--coffee-bean);
     height: 100vh;
-    width: 100vw;
     color: var(--ghost-white);
     padding-top: 23vh;
 }
@@ -52,7 +52,9 @@ button.muted:hover {
     font-family: var(--unna);
 }
 
-.hero-content, .body-content, .footer-content {
+.hero-content,
+.body-content,
+.footer-content {
     max-width: 1248px;
     margin: auto;
 }

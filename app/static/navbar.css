@@ -3,12 +3,14 @@
     font-size: 48px;
     width: 85%;
     padding: 24px;
-    left: 118px;
+    left: 50%;
+    transform: translateX(-50%);
     top: 48px;
     border: solid var(--ghost-white) 2px;
     background: var(--coffee-bean);
     position: fixed;
     z-index: 1;
+    overflow: hidden;
 }
 
 .navbar-title {
@@ -76,7 +78,8 @@
     overflow-y: scroll;
 }
 
-.tag, .ingredient {
+.tag,
+.ingredient {
     font-size: 20px;
     height: 24px;
     border-radius: 12px;
@@ -86,7 +89,8 @@
     user-select: none;
 }
 
-.tag:hover, .ingredient:hover {
+.tag:hover,
+.ingredient:hover {
     cursor: pointer;
 }
 
@@ -103,7 +107,8 @@
     height: 32px;
 }
 
-.navbar-search select, .navbar-search input {
+.navbar-search select,
+.navbar-search input {
     height: 72px;
     font-size: 24px;
     padding: 0 24px;
@@ -131,6 +136,11 @@
 }
 
 /* NAVBAR FOR CART */
+.navbar-for-cart {
+    max-height: 70vh;
+    overflow-y: scroll;
+}
+
 .navbar-cart {
     display: none;
 }
@@ -154,16 +164,19 @@
     border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
     font-size: 24px;
     padding: 16px 12px;
 }
 
-th:first-child, td:first-child {
+th:first-child,
+td:first-child {
     text-align: left;
 }
 
-th:not(:first-child), td:not(:first-child) {
+th:not(:first-child),
+td:not(:first-child) {
     text-align: right;
 }
 
