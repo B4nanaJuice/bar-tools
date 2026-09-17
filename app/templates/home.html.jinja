@@ -174,6 +174,7 @@
                                 let name = document.querySelector('.name-search input').value;
 
                                 let target = new URL(window.location);
+                                target.searchParams.delete('page')
 
                                 ingredients.length != 0 ? target.searchParams.set('ingredients', ingredients.join(',')) : target.searchParams.delete('ingredients');
                                 tags.length != 0 ? target.searchParams.set('tags', tags.join(',')) : target.searchParams.delete('tags');
@@ -304,6 +305,10 @@
         <div class="body">
             <div class="body-content">
                 <div class="cocktails">
+                    {% if pagination.total == 0 %}
+                        <h1>Aucun résultat...</h1>
+                    {% endif %}
+
                     {% for cocktail in pagination %}
                         <div class="cocktail-card">
                             {# <img src="{{ url_for('static', f'img/{cocktail.name}.png') }}" width="128" height="128"> #}
@@ -418,7 +423,7 @@
                 </div>
 
                 <div class="pagination">
-                    <button class="pagination-before {{ 'muted' if pagination.page == 1 else '' }}">
+                    <button class="pagination-before {{ 'muted' if pagination.page == 1 else '' }}" onclick="window.location = '{{ url_for(endpoint, page = [1, pagination.page - 1] | max, **args) }}'">
                         <svg width="32" height="32" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M29 15H1M15 1L1 15L15 29" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -428,7 +433,7 @@
                         {{ pagination.first }} - {{ pagination.last }} sur {{ pagination.total }}
                     </div>
 
-                    <button class="pagination-after {{ 'muted' if pagination.page == pagination.pages else '' }}">
+                    <button class="pagination-after {{ 'muted' if pagination.page == pagination.pages else '' }}" onclick="window.location = '{{ url_for(endpoint, page = [pagination.pages, pagination.page + 1] | min, **args) }}'">
                         <svg width="32" height="32" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 15H29M15 29L29 15L15 1" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
