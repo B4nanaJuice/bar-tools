@@ -12,7 +12,7 @@
     <body>
 
         <div class="notifications">
-            <!-- <div class="notification notification-success">
+            <div class="notification notification-success">
                 <button class="icon-only" onclick="this.parentElement.remove();">
                     <svg width="20" height="20" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -20,8 +20,8 @@
                 </button>
                 <h2 class="notification-title">Notification success</h2>
                 <p class="notification-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div> -->
-            <!-- <div class="notification notification-error">
+            </div>
+            <div class="notification notification-error">
                 <button class="icon-only" onclick="this.parentElement.remove();">
                     <svg width="20" height="20" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -29,7 +29,7 @@
                 </button>
                 <h2 class="notification-title">Notification error</h2>
                 <p class="notification-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div> -->
+            </div>
         </div>
 
         <script>
@@ -96,13 +96,13 @@
                 <p class="navbar-title">La niche</p>
                 <div class="right">
                     <button class="toggle-navbar-for-search icon-only" onclick="document.querySelector('.navbar').classList.toggle('navbar-for-search'); document.querySelector('.navbar').classList.remove('navbar-for-cart');">
-                        <svg width="40" height="40" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M37 37L28.3 28.3M33 17C33 25.8366 25.8366 33 17 33C8.16344 33 1 25.8366 1 17C1 8.16344 8.16344 1 17 1C25.8366 1 33 8.16344 33 17Z" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <div style="margin: 0 24px; border: solid var(--ghost-white) 1px; height: 48px;"></div>
+                    <div></div>
                     <button class="toggle-navbar-for-cart icon-only" onclick="document.querySelector('.navbar').classList.toggle('navbar-for-cart'); document.querySelector('.navbar').classList.remove('navbar-for-search');">
-                        <svg width="40" height="40" viewBox="0 0 38 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 38 42" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M37 9V37C37 38.0609 36.5786 39.0783 35.8284 39.8284C35.0783 40.5786 34.0609 41 33 41H5C3.93913 41 2.92172 40.5786 2.17157 39.8284C1.42143 39.0783 1 38.0609 1 37V9L7 1H31L37 9ZM1 9H37M27 17C27 19.1217 26.1571 21.1566 24.6569 22.6569C23.1566 24.1571 21.1217 25 19 25C16.8783 25 14.8434 24.1571 13.3431 22.6569C11.8429 21.1566 11 19.1217 11 17" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
@@ -185,7 +185,7 @@
                     <div class="search-action">
                         <button onclick="startSearch();">
                             Rechercher
-                            <svg width="40" height="40" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M37 37L28.3 28.3M33 17C33 25.8366 25.8366 33 17 33C8.16344 33 1 25.8366 1 17C1 8.16344 8.16344 1 17 1C25.8366 1 33 8.16344 33 17Z" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
@@ -223,8 +223,9 @@
                     <div class="form-row">
                         <label for="order-name" class="order-name">
                             Nom :
-                            <input type="text" id="order-name">
                         </label>
+                        <input type="text" id="order-name">
+                        <div style="flex: 1 1;"></div>
                         <button class="place-order" onclick="placeOrder()">Placer la commande</button>
 
                         <script>
@@ -302,19 +303,19 @@
                     <div class="cocktail-card">
                         <img src="" alt="" width="128" height="128">
                         <h1 class="card-title">Mojito</h1>
-                        <button class="card-cta" onclick="showCocktailDetails('Mojito', 1, [], ['Rhum blanc', 'Eau gazeuse'])">Détails</button>
+                        <button class="card-cta" onclick="showCocktailDetails('Mojito', 1, [], ['Rhum blanc', 'Eau gazeuse'])">Commander</button>
                     </div>
 
                     <div class="cocktail-card">
                         <img src="" alt="" width="128" height="128">
                         <h1 class="card-title" style="font-size:30px;">Long Island Iced Tea</h1>
-                        <button class="card-cta" onclick="showCocktailDetails('Long Island Iced Tea', 2, [], ['Rhum blanc', 'et d\'autres trucs'])">Détails</button>
+                        <button class="card-cta" onclick="showCocktailDetails('Long Island Iced Tea', 2, [], ['Rhum blanc', 'et d\'autres trucs'])">Commander</button>
                     </div>
 
                     <div class="cocktail-card">
                         <img src="" alt="" width="128" height="128">
                         <h1 class="card-title">Abc</h1>
-                        <button class="card-cta" onclick="showCocktailDetails('Abc', 6, [], ['Rhum blanc', 'et d\'autres trucs'])">Détails</button>
+                        <button class="card-cta" onclick="showCocktailDetails('Abc', 6, [], ['Rhum blanc', 'et d\'autres trucs'])">Commander</button>
                     </div>
 
                     <script>
