@@ -10,7 +10,8 @@
     background: var(--coffee-bean);
     position: fixed;
     z-index: 1;
-    /* overflow: hidden; */
+    max-height: 70vh;
+    overflow-y: scroll;
 
     & .navbar-title {
         text-align: center;
@@ -290,9 +291,6 @@
 }
 
 .navbar-for-cart {
-    max-height: 70vh;
-    overflow-y: scroll;
-
     & .navbar-cart {
         display: block;
         margin: 48px 0;
@@ -305,17 +303,28 @@
 
 @media screen and (max-width: 416px) {
     .navbar-cart {
+        & table {
+            & th, & td {
+                font-size: 16px;
+
+                & button {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+
         & .form-row {
             flex-direction: column;
             width: 90%;
 
             & .order-name {
-                font-size: 24px;
+                font-size: 20px;
                 margin: 0px;
             }
 
             & .place-order {
-                margin-top: 24px;
+                margin-top: 20px;
             }
         }
     }

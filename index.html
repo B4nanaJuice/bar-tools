@@ -300,6 +300,28 @@
 
             <div class="body-content">
                 <div class="cocktails">
+                    <div id="adaptive-test-box" style="position: absolute; visibility: hidden; height: auto; width: auto; white-space: nowrap; font-family: var(--inria);"></div>
+                    <script>
+                        function generateCardTitle(sourceScript, text) {
+                            let parent = sourceScript.parentElement;
+                            let padding = 32;
+                            let maxSize = parent.offsetWidth - padding;
+                            let target = parent.querySelector('.card-title');
+                            let fontSize = parseInt(window.getComputedStyle(target).getPropertyValue('font-size').replace("px", "")); // "36px" or "24px"
+                            let testBox = document.getElementById('adaptive-test-box');
+
+                            testBox.innerText = text;
+                            testBox.style.fontSize = `${fontSize}px`;
+                            while (testBox.offsetWidth > maxSize) {
+                                fontSize--;
+                                testBox.style.fontSize = `${fontSize}px`;
+                            }
+
+                            target.innerText = text;
+                            target.style.fontSize = `${fontSize}px`;
+                        }
+                    </script>
+
                     <div class="cocktail-card">
                         <img src="" alt="" width="128" height="128">
                         <h1 class="card-title">Mojito</h1>
@@ -308,7 +330,12 @@
 
                     <div class="cocktail-card">
                         <img src="" alt="" width="128" height="128">
-                        <h1 class="card-title" style="font-size:30px;">Long Island Iced Tea</h1>
+                        <h1 class="card-title">Long Island Iced Tea</h1>
+                        <script>
+                            var scriptTag = document.getElementsByTagName('script');
+                            scriptTag = scriptTag[scriptTag.length - 1];
+                            generateCardTitle(scriptTag, "Long Island Iced Tea")
+                        </script>
                         <button class="card-cta" onclick="showCocktailDetails('Long Island Iced Tea', 2, [], ['Rhum blanc', 'et d\'autres trucs'])">Commander</button>
                     </div>
 
@@ -317,6 +344,26 @@
                         <h1 class="card-title">Abc</h1>
                         <button class="card-cta" onclick="showCocktailDetails('Abc', 6, [], ['Rhum blanc', 'et d\'autres trucs'])">Commander</button>
                     </div>
+
+                    <div class="cocktail-card">
+                        <img src="" alt="" width="128" height="128">
+                        <h1 class="card-title">AMF</h1>
+                        <button class="card-cta" onclick="showCocktailDetails('Abc', 6, [], [])">Commander</button>
+                    </div>
+
+                    <div class="cocktail-card">
+                        <img src="" alt="" width="128" height="128">
+                        <h1 class="card-title">Negroni</h1>
+                        <button class="card-cta" onclick="showCocktailDetails('Abc', 6, [], [])">Commander</button>
+                    </div>
+
+                    <div class="cocktail-card">
+                        <img src="" alt="" width="128" height="128">
+                        <h1 class="card-title">Lagon bleu</h1>
+                        <button class="card-cta" onclick="showCocktailDetails('Abc', 6, [], [])">Commander</button>
+                    </div>
+
+                    
 
                     <script>
                         function showCocktailDetails(cocktailName, cocktailId, cocktailTags, cocktailIngredients) {
@@ -438,12 +485,12 @@
 
                 <div class="pagination">
                     <button class="pagination-before">
-                        <svg width="32" height="32" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M29 15H1M15 1L1 15L15 29" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
                     <button class="pagination-after">
-                        <svg width="32" height="32" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 15H29M15 29L29 15L15 1" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
