@@ -450,23 +450,25 @@
                     </script>
                 </div>
 
-                <div class="pagination">
-                    <button class="pagination-before {{ 'muted' if pagination.page == 1 else '' }}" onclick="window.location = '{{ url_for(endpoint, page = [1, pagination.page - 1] | max, **args) }}'">
-                        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M29 15H1M15 1L1 15L15 29" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+                {% if pagination.total != 0 %}
+                    <div class="pagination">
+                        <button class="pagination-before {{ 'muted' if pagination.page == 1 else '' }}" onclick="window.location = '{{ url_for(endpoint, page = [1, pagination.page - 1] | max, **args) }}'">
+                            <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M29 15H1M15 1L1 15L15 29" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
 
-                    <div class="page-items">
-                        {{ pagination.first }} - {{ pagination.last }} sur {{ pagination.total }}
-                    </div>
+                        <div class="page-items">
+                            {{ pagination.first }} - {{ pagination.last }} sur {{ pagination.total }}
+                        </div>
 
-                    <button class="pagination-after {{ 'muted' if pagination.page == pagination.pages else '' }}" onclick="window.location = '{{ url_for(endpoint, page = [pagination.pages, pagination.page + 1] | min, **args) }}'">
-                        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 15H29M15 29L29 15L15 1" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
+                        <button class="pagination-after {{ 'muted' if pagination.page == pagination.pages else '' }}" onclick="window.location = '{{ url_for(endpoint, page = [pagination.pages, pagination.page + 1] | min, **args) }}'">
+                            <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 15H29M15 29L29 15L15 1" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>     
+                {% endif %}
             </div>
         </div>
 

@@ -1,0 +1,11 @@
+<form method="post">
+    {% for ingredient in ingredients %}
+        {% if ingredient.is_available %}
+            <input type="checkbox" name="{{ ingredient.id }}" id="{{ ingredient.id }}" value="{{ ingredient.id }}" checked>
+        {% else %}
+            <input type="checkbox" name="{{ ingredient.id }}" id="{{ ingredient.id }}" value="{{ ingredient.id }}">
+        {% endif %}
+        <label for="{{ ingredient.id }}">{{ ingredient.name }}</label>
+    {% endfor %}
+    <input type="submit" value="Valider">
+</form>

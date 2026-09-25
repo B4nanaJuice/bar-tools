@@ -9,7 +9,13 @@ page = Blueprint("home", __name__)
 @page.route("/")
 def index():
 
-    base_query = db.select(Cocktail)
+    base_query = db.select(Cocktail).where(
+                    ~Cocktail.ingredient_associations.any(
+                        CocktailIngredient.ingredient.has(
+                            Ingredient.is_available.is_(False)
+                        )
+                    )
+                )
 
     # Get URL arguments
     ingredients = request.args.get("ingredients")
