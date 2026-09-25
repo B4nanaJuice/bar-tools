@@ -1,0 +1,20 @@
+<table>
+    <tr>
+        <th>Statut</th>
+        <th>Nom</th>
+        <th>Liste</th>
+    </tr>
+    {% for order in orders %}
+        <tr>
+            <td>{{ order.status }}</td>
+            <td>{{ order.customer_name }}</td>
+            <td>
+                <ul>
+                    {% for order_item in order.items %}
+                        <li>{{ order_item.quantity }}x {{ order_item.cocktail.name }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+</table>

@@ -14,9 +14,9 @@ def check_user_login():
 @page.get("/orders")
 def get_orders():
 
-    orders = Order.query.all()
+    orders = Order.query.order_by(Order.id).all()
 
-    return jsonify([f"{_}" for _ in orders])
+    return render_template("orders.html.jinja", orders = orders)
 
 @page.route("/stocks", methods = ["GET", "POST"])
 def manage_stocks():
