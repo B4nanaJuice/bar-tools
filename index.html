@@ -105,6 +105,7 @@
                         <svg viewBox="0 0 38 42" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M37 9V37C37 38.0609 36.5786 39.0783 35.8284 39.8284C35.0783 40.5786 34.0609 41 33 41H5C3.93913 41 2.92172 40.5786 2.17157 39.8284C1.42143 39.0783 1 38.0609 1 37V9L7 1H31L37 9ZM1 9H37M27 17C27 19.1217 26.1571 21.1566 24.6569 22.6569C23.1566 24.1571 21.1217 25 19 25C16.8783 25 14.8434 24.1571 13.3431 22.6569C11.8429 21.1566 11 19.1217 11 17" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
+                        <div class="cart-size">5</div>
                     </button>
                 </div>
 
@@ -414,8 +415,11 @@
                                 </tr>
                             `;
 
+                            let cartSize = 0;
+
                             for (var [cocktail, quantity] of Object.entries(currentOrder)) {
                                 let [cocktailId, cocktailName] = cocktail.split(',');
+                                cartSize += quantity;
 
                                 let tableRow = document.createElement('tr');
 
@@ -449,6 +453,9 @@
 
                                 orderTable.appendChild(tableRow);
                             }
+
+                            cartSize == 0 ? document.querySelector(".cart-size").style.display = 'none' : document.querySelector(".cart-size").style.display = 'block';
+                            cartSize > 9 ? document.querySelector(".cart-size").innerText = '9+' : document.querySelector(".cart-size").innerText = `${cartSize}`;
                         }
 
                         refreshOrderTable();
