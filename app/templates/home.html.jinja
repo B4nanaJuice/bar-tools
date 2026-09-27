@@ -225,15 +225,22 @@
 
                                 document.querySelector('.popup-content .primary-button').onclick = (e) => {
                                     let order = { name: name };
+                                    let toRemove = [];
                                     for (let i = 0; i < localStorage.length; i++) {
                                         let key = localStorage.key(i);
+                                        console.log(`key: ${key}`)
                                         if (key.match(/^[0-9]*_.*$/)) {
+                                            console.log('The key matches !')
                                             let cocktailId = key.split('_')[0];
                                             let quantity = localStorage.getItem(key);
 
                                             order[cocktailId] = quantity;
+                                            toRemove.push(key);
                                         }
-                                        localStorage.removeItem(key);
+                                    }
+
+                                    for (let i = 0; i < toRemove.length; i++) {
+                                        localStorage.removeItem(toRemove[i]);
                                     }
 
                                     // Send command to api
