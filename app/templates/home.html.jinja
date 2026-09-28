@@ -239,10 +239,6 @@
                                         }
                                     }
 
-                                    for (let i = 0; i < toRemove.length; i++) {
-                                        localStorage.removeItem(toRemove[i]);
-                                    }
-
                                     // Send command to api
                                     (async () => {
                                         const rawResponse = await fetch('{{ url_for("api.send_order") }}', {
@@ -260,12 +256,17 @@
                                             createNotification("success", "Commande passée", "Ta commande a bien été validée. Attends un peu et les boissons arriveront à toi !");
                                             document.querySelector('.navbar').classList.remove('navbar-for-cart');
                                             document.querySelector('.order-name input').value = '';
+
+                                            for (let i = 0; i < toRemove.length; i++) {
+                                                localStorage.removeItem(toRemove[i]);
+                                            }
+
                                             refreshOrderTable();
                                         } else {
                                             createNotification("error", "Woops", content.message);
+                                            refreshOrderTable();
                                         }
                                     })();
-
                                     document.querySelector('.popup').classList.remove('popup-open');
                                 }
                                 document.querySelector('.popup-content .primary-button p').innerText = "Valider";

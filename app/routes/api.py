@@ -18,17 +18,22 @@ def send_order():
 
     for cocktail_id in data:
 
-        cocktail = db.session.scalar(db.select(Cocktail).where(Cocktail.id == int(cocktail_id)))
-        if cocktail is None:
-            return jsonify({"message": "Cocktail Invalide"}), 400
+        try:
+            cocktail = db.session.scalar(db.select(Cocktail).where(Cocktail.id == int(cocktail_id)))
 
-        db.session.add(
-            OrderItem(
-                order = order,
-                cocktail = cocktail,
-                quantity = int(data[cocktail_id])
+            if cocktail is None:
+                return jsonify({"message": "Cocktail Invalide"}), 400
+
+            db.session.add(
+                OrderItem(
+                    order = order,
+                    cocktail = cocktail,
+                    quantity = int(data[cocktail_id])
+                )
             )
-        )
+
+        except Exception as e:
+            return jsonify({"message": "Something went wrong..."}), 400
 
     db.session.commit()
 
