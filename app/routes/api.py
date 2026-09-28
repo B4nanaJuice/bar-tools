@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, url_for, request, jsonify
+import re
 
 from app.database import db
 from app.models import Cocktail, Tag, Ingredient, Order, OrderItem
@@ -19,10 +20,14 @@ def send_order():
     for cocktail_id in data:
 
         try:
-            cocktail = db.session.scalar(db.select(Cocktail).where(Cocktail.id == int(cocktail_id)))
+            assert re.match(r'^[0-9]+$', cocktail_id), "Le cocktail demandé est invalide. Vérifie ton panier avant de recommencer."
+            cocktail_id = int(cocktail_id)
+            assert cocktail_id > 0, "Le cocktail demandé est invalide. Vérifie ton panier avant de recommencer."
+
+            cocktail = db.session.scalar(db.select(Cocktail).where(Cocktail.id == cocktail_id))
 
             if cocktail is None:
-                return jsonify({"message": "Cocktail Invalide"}), 400
+                return jsonify({"message": "Le cocktail demandé est invalide. Vérifie ton panier avant de recommencer."}), 400
 
             db.session.add(
                 OrderItem(
@@ -33,8 +38,8 @@ def send_order():
             )
 
         except Exception as e:
-            return jsonify({"message": "Something went wrong..."}), 400
+            return jsonify({"message": e}), 400
 
     db.session.commit()
 
-    return jsonify({"message": "Commande passée !", "orderId": order.id}), 200
+    return jsonify({"message": "Ta commande a bien été passée ! Tu recevras bientôt ce que tu as demandé.", "orderId": order.id}), 200

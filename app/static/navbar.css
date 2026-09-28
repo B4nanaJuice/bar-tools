@@ -15,6 +15,7 @@
 
     & .navbar-title {
         text-align: center;
+        color: var(--ghost-white);
     }
 
     & button {

@@ -1,0 +1,30 @@
+{% macro popup() %}
+
+    <div class="popup">
+        <div class="popup-content">
+            <button class="icon-only" onclick="document.querySelector('.popup').classList.remove('popup-open');">
+                <svg width="24" height="24" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <h1 class="popup-title">This is a title</h1>
+            <p class="popup-description">This is a description</p>
+            <div class="popup-row">
+                <button class="secondary-button" onclick="document.querySelector('.popup').classList.remove('popup-open');">
+                    Annuler
+                    <svg width="24" height="24" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="primary-button">
+                    <p>Valider</p>
+                    <svg width="24" height="24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M33 1L11 23L1 13" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="popup-background" onclick="document.querySelector('.popup').classList.remove('popup-open');"></div>
+    </div>
+
+{%- endmacro %}

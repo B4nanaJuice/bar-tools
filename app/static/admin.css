@@ -1,0 +1,91 @@
+.hero-content {
+    & form {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        gap: 16px 0;
+
+        & .input-checkbox {
+            width: 30%;
+            min-width: 150px;
+            display: flex;
+            flex-direction: row;
+
+            & input[type="checkbox"] {
+                outline: none;
+                border: solid var(--ghost-white) 2px;
+                width: 32px;
+                height: 32px;
+                background: none;
+                appearance: none;
+                margin-right: 16px;
+                position: relative;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 4px;
+                    right: 4px;
+                    width: 20px;
+                    height: 20px;
+                    background: var(--champagne-mist);
+                    transform: scale(0);
+                    transition: transform .3s ease;
+                }
+
+                &:checked::after {
+                    transform: scale(1);
+                }
+            }
+
+            & label {
+                font-size: 32px;
+            }
+        }
+
+        & input[type="submit"] {
+            font-size: 32px;
+            color: var(--ghost-white);
+            border: solid var(--ghost-white) 2px;
+            background: var(--coffee-bean);
+            height: 64px;
+            width: 50%;
+            max-width: 300px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 416px) {
+    .hero-content {
+        & form {
+            width: 95%;
+            margin: auto;
+
+            & .input-checkbox {
+                & input[type="checkbox"] {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 12px;
+
+                    &::after {
+                        width: 8px;
+                        height: 8px;
+                    }
+                }
+
+                & label {
+                    font-size: 20px;
+                }
+            }
+
+            & input[type="submit"] {
+                font-size: 24px;
+            }
+        }
+    }
+}
