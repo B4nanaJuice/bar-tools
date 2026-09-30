@@ -1,24 +1,73 @@
 {% from 'components/navbar.html.jinja' import navbar %}
+{% from 'components/footer.html.jinja' import footer %}
+{% from 'components/notifications.html.jinja' import notifications %}
+{% from 'components/popup.html.jinja' import popup %}
 
-{{ navbar(type = "admin") }}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'navbar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'popup.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'notification.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'admin.css') }}">
+        <title>Commandes - La niche</title>
+    </head>
+    <body>
 
-<table>
-    <tr>
-        <th>Statut</th>
-        <th>Nom</th>
-        <th>Liste</th>
-    </tr>
-    {% for order in orders %}
-        <tr>
-            <td>{{ order.status }}</td>
-            <td>{{ order.customer_name }}</td>
-            <td>
-                <ul>
-                    {% for order_item in order.items %}
-                        <li>{{ order_item.quantity }}x {{ order_item.cocktail.name }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-    {% endfor %}
-</table>
+        {{ notifications() }}
+        {{ popup() }}
+        {{ navbar(type = "admin") }}
+
+        <div class="hero">
+            <button class="icon-only">Afficher les commandes terminées</button>
+            <table>
+                <tr>
+                    <th>
+                        <div class="table-row">
+                            <p>Statut</p>
+                            <p>Nom</p>
+                        </div>
+                    </th>
+                </tr>
+                {% for order in orders %}
+                    <tr>
+                        <td>
+                            <div class="table-column" onclick="this.querySelector('.order-description').classList.toggle('hidden')">
+                                <div class="table-row">
+                                    <select name="order-status" id="order-status">
+                                        {% if order.status == "new" %}
+                                            <option value="new" selected>Nouveau</option>
+                                            <option value="pending">En cours</option>
+                                            <option value="finished">Terminé</option>
+                                        {% elif order.statud == "pending" %}
+                                            <option value="new">Nouveau</option>
+                                            <option value="pending" selected>En cours</option>
+                                            <option value="finished">Terminé</option>
+                                        {% else %}
+                                            <option value="new">Nouveau</option>
+                                            <option value="pending">En cours</option>
+                                            <option value="finished" selected>Terminé</option>
+                                        {% endif %}
+                                    </select>
+                                    <p>{{ order.customer_name }}</p>
+                                </div>
+                                <div class="table-column order-description hidden">
+                                    {% for item in order.items %}
+                                        <div class="table-row">
+                                            <p>{{ item.cocktail.name }}</p>
+                                            <p>{{ item.quantity }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>                            
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        
+    </body>
+</html>
