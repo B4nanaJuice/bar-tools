@@ -1,12 +1,45 @@
 services:
+  traefik:
+    image: traefik:v3.7
+    container_name: traefik
+
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=proxy"
+      - "--entrypoints.web.address=:80"
+
+    ports:
+      - "80:80"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    networks:
+      - proxy
+
   web:
     build: .
     container_name: web
 
-    ports:
-      - "80:8000"
+    # ports:
+    #   - "80:8000"
 
     env_file: ".env"
+
+    expose:
+      - "8000"
+
+    labels:
+      - "traefik.enable=true"
+      # - "traefik.http.routers.cocktails.rule=Host(`cocktails.local`)"
+      - "traefik.http.routers.cocktails.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.cocktails.entrypoints=web"
+      - "traefik.http.services.cocktails.loadbalancer.server.port=8000"
+
+    networks:
+      - proxy
+      - backend
 
   db:
     image: postgres:18
@@ -16,6 +49,15 @@ services:
 
     volumes:
       - "postgres_data:/var/lib/postgresql"
+
+    networks:
+      - backend
+
+networks:
+  proxy:
+    name: proxy
+  backend:
+    name: backend
 
 volumes:
   postgres_data:

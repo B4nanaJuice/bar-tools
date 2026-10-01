@@ -33,7 +33,7 @@ def send_order():
                 OrderItem(
                     order = order,
                     cocktail = cocktail,
-                    quantity = int(data[cocktail_id])
+                    quantity = int(data[f"{cocktail_id}"])
                 )
             )
 

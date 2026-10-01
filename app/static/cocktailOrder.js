@@ -32,7 +32,7 @@ function placeOrder() {
 
         // Send command to api
         (async () => {
-            const rawResponse = await fetch('{{ url_for("api.send_order") }}', {
+            const rawResponse = await fetch('/api/send-order', {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json',
@@ -40,6 +40,8 @@ function placeOrder() {
                 },
                 body: JSON.stringify(order)
             });
+
+            console.log(rawResponse)
 
             const content = await rawResponse.json();
 
