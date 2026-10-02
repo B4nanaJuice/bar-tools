@@ -22,52 +22,96 @@
         {{ navbar(type = "admin") }}
 
         <div class="hero">
-            <button class="icon-only">Afficher les commandes terminées</button>
-            <table>
-                <tr>
-                    <th>
-                        <div class="table-row">
-                            <p>Statut</p>
-                            <p>Nom</p>
-                        </div>
-                    </th>
-                </tr>
-                {% for order in orders %}
+            <div class="hero-content">
+                <button class="icon-only" onclick="this.parentElement.querySelector('table').classList.toggle('show-finished-orders')">Afficher les commandes terminées</button>
+                <table>
                     <tr>
-                        <td>
-                            <div class="table-column" onclick="this.querySelector('.order-description').classList.toggle('hidden')">
-                                <div class="table-row">
-                                    <select name="order-status" id="order-status">
-                                        {% if order.status == "new" %}
-                                            <option value="new" selected>Nouveau</option>
-                                            <option value="pending">En cours</option>
-                                            <option value="finished">Terminé</option>
-                                        {% elif order.statud == "pending" %}
-                                            <option value="new">Nouveau</option>
-                                            <option value="pending" selected>En cours</option>
-                                            <option value="finished">Terminé</option>
-                                        {% else %}
-                                            <option value="new">Nouveau</option>
-                                            <option value="pending">En cours</option>
-                                            <option value="finished" selected>Terminé</option>
-                                        {% endif %}
-                                    </select>
-                                    <p>{{ order.customer_name }}</p>
-                                </div>
-                                <div class="table-column order-description hidden">
-                                    {% for item in order.items %}
-                                        <div class="table-row">
-                                            <p>{{ item.cocktail.name }}</p>
-                                            <p>{{ item.quantity }}</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>                            
-                        </td>
+                        <th>
+                            <div class="table-row">
+                                <p>Statut</p>
+                                <p>Nom</p>
+                            </div>
+                        </th>
                     </tr>
-                {% endfor %}
-            </table>
+                    {% for order in orders %}
+                        <tr class="{{ 'finished-order' if order.status == 'finished' else '' }}">
+                            <td>
+                                <div class="table-column show-order-description can-open-description">
+                                    <div class="table-row can-open-description">
+                                        <select name="order-status" id="order-status" onchange="updateOrderStatus(this, {{ order.id }})">
+                                            {% if order.status == "new" %}
+                                                <option value="new" selected>Nouveau</option>
+                                                <option value="pending">En cours</option>
+                                                <option value="finished">Terminé</option>
+                                            {% elif order.status == "pending" %}
+                                                <option value="new">Nouveau</option>
+                                                <option value="pending" selected>En cours</option>
+                                                <option value="finished">Terminé</option>
+                                            {% else %}
+                                                <option value="new">Nouveau</option>
+                                                <option value="pending">En cours</option>
+                                                <option value="finished" selected>Terminé</option>
+                                            {% endif %}
+                                        </select>
+                                        <p class="can-open-description">{{ order.customer_name }}</p>
+                                    </div>
+                                    <div class="table-column order-description hidden">
+                                        {% for item in order.items %}
+                                            {% set result = [] %}
+                                            {% for ingredient in item.cocktail.ingredient_associations %}
+                                                {% set _ = result.append([ingredient.ingredient.name, ingredient.quantity, ingredient.unit]) %}
+                                            {% endfor %}
+
+                                            <div class="table-row order-item" onclick='showRecipe("{{ item.cocktail.name }}", {{ result | tojson }})'>
+                                                <p>{{ item.cocktail.name }}</p>
+                                                <p>{{ item.quantity }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>                            
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            </div>
         </div>
+
+        <script>
+            Array.from(document.querySelectorAll('.show-order-description')).map((node) => {
+                node.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('can-open-description')) {
+                        node.querySelector('.order-description').classList.toggle('hidden');
+                    }
+                });
+            });
+
+            function showRecipe(cocktailName, ingredients) {
+                // Ingredients: [(name, quantity, measure), (name, qty, measure), (name, qty, measure)]
+                document.querySelector('.popup-title').innerText = cocktailName;
+                document.querySelector('.popup-description').innerHTML = `
+                    <ul>
+                        ${ingredients.map((i => `<li>${i[1]} ${i[2]} ${i[0]}</li>`)).join('')}
+                    </ul>
+                `;
+
+                document.querySelector('.popup-content .primary-button').onclick = (e) => {
+                    document.querySelector('.popup').classList.remove('popup-open');
+                }
+
+                document.querySelector('.popup-content .primary-button p').innerText = "Valider";
+
+                document.querySelector('.popup').classList.add('popup-open');
+            }
+
+            function updateOrderStatus(selectNode, orderId) {
+                if (selectNode.value == "finished") {
+                    selectNode.parentElement.parentElement.parentElement.parentElement.classList.add('finished-order');
+                } else {
+                    selectNode.parentElement.parentElement.parentElement.parentElement.classList.remove('finished-order');
+                }
+            }
+        </script>
         
     </body>
 </html>

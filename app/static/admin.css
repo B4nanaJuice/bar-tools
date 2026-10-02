@@ -107,10 +107,16 @@ table {
     }
 }
 
+.hero-content > button {
+    margin-left: 10%;
+    margin-top: 48px;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
 table {
     width: 80%;
     margin: auto;
-    margin-top: 48px;
     margin-bottom: 48px;
     padding: 0 48px;
     border-top: solid var(--ghost-white) 2px;
@@ -138,6 +144,22 @@ table {
             font-size: 24px;
             padding: 16px 12px;
             border-top: dashed var(--ghost-white) 2px;
+
+            &:first-child {
+                margin-top: 16px;
+            }
+
+            &:last-child {
+                padding-bottom: 0;
+            }
         }
     }
+}
+
+.finished-order {
+    visibility: collapse;
+}
+
+.show-finished-orders .finished-order {
+    visibility: visible;
 }
