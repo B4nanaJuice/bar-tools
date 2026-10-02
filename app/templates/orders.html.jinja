@@ -105,11 +105,40 @@
             }
 
             function updateOrderStatus(selectNode, orderId) {
-                if (selectNode.value == "finished") {
-                    selectNode.parentElement.parentElement.parentElement.parentElement.classList.add('finished-order');
-                } else {
-                    selectNode.parentElement.parentElement.parentElement.parentElement.classList.remove('finished-order');
-                }
+                (async () => {
+                    const rawResponse = await fetch('/api/update-order-status', {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "order_id": orderId,
+                            "status": selectNode.value
+                        })
+                    });
+
+                    const content = await rawResponse.json();
+
+                    if (rawResponse.status == 200) {
+                        createNotification("success", "Statut changé", content.message);
+                        switch (content.status) {
+                            case 'new':
+                                selectNode.parentElement.parentElement.parentElement.parentElement.classList.remove('finished-order');
+                                break;
+
+                            case 'pending':
+                                selectNode.parentElement.parentElement.parentElement.parentElement.classList.remove('finished-order');
+                                break;
+
+                            case 'finished':
+                                selectNode.parentElement.parentElement.parentElement.parentElement.classList.add('finished-order');
+                                break;
+                        }
+                    } else {
+                        createNotification("error", "Woops", content.message);
+                    }
+                })();
             }
         </script>
         
