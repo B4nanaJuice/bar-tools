@@ -1,0 +1,49 @@
+{% from 'components/navbar.html.jinja' import navbar %}
+
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'navbar.css') }}">
+        <title>Ma commande - La niche</title>
+    </head>
+    <body>
+
+        {{ navbar(type = "none") }}
+
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Statut de commande</h1>
+                <p class="status"></p>
+                <div class="loading-bar"></div>
+            </div>
+        </div>
+
+        <script>
+            function updateStatus() {
+                let target = new URL(window.location);
+                let orderId = target.searchParams.get('order-id');
+
+                (async () => {
+                    const rawResponse = await fetch(`/api/get-order-status?order-id=${orderId}`, {
+                        method: "GET",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const content = await rawResponse.json();
+                    document.querySelector(".status").innerText = content.status;
+
+                    if (content.status != "finished") setTimeout(() => { updateStatus(); }, 1000);
+                })();
+            }
+
+            updateStatus();
+        </script>
+        
+    </body>
+</html>

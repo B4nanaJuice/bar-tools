@@ -55,11 +55,11 @@ def get_order_status():
         order = db.session.scalar(db.select(Order).where(Order.id == order_id))
 
         if order is None:
-            return jsonify({"status": None})
+            return jsonify({"status": None}), 400
 
-        return jsonify({"status": order.status})
+        return jsonify({"status": order.status}), 200
     except:
-        return jsonify({"status": None})
+        return jsonify({"status": None}), 400
 
 @page.post('/update-order-status')
 def update_order_stats() :

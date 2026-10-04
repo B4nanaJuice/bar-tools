@@ -45,3 +45,7 @@ def index():
         del endpoint_args["page"]
     
     return render_template("home.html.jinja", pagination = page, tags = tags, ingredients = ingredients, endpoint = request.endpoint, args = endpoint_args)
+
+@page.get("/order-status")
+def order_status():
+    return render_template("order-status.html.jinja")
