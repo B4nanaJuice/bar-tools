@@ -23,6 +23,15 @@ function createNotification(type, title, description) {
     notification.appendChild(notificationTitle);
     notification.appendChild(notificationDesc);
 
+    notification.innerHTML += "<div class=\"progress-bar\" style=\"height: 4px; margin-top: 12px;\"><div class=\"bar\" style=\"height: 4px;\"></div></div>";
+
     document.querySelector('.notifications').appendChild(notification);
 
+    setTimeout(() => {
+        notification.querySelector('.progress-bar .bar').style.width = '100%';
+
+        setTimeout(() => {
+            notification.remove();
+        }, 2000);
+    }, 100);
 }

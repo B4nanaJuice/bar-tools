@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename = 'navbar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'progress-bar.css') }}">
         <title>Ma commande - La niche</title>
     </head>
     <body>
@@ -15,9 +16,11 @@
 
         <div class="hero">
             <div class="hero-content">
-                <h1>Statut de commande</h1>
-                <p class="status"></p>
-                <div class="loading-bar"></div>
+                <h1 style="text-align: center;">Statut de commande</h1>
+                <p class="status" style="text-align: center; margin: 24px 0 32px 0;"></p>
+                <div class="progress-bar" style="width: 80%; margin: auto;">
+                    <div class="bar"></div>
+                </div>
             </div>
         </div>
 
@@ -36,9 +39,26 @@
                     });
 
                     const content = await rawResponse.json();
-                    document.querySelector(".status").innerText = content.status;
+                    let progressBar = document.querySelector('.progress-bar');                    
 
-                    if (content.status != "finished") setTimeout(() => { updateStatus(); }, 1000);
+                    switch (content.status) {
+                        case "new":
+                            document.querySelector(".status").innerText = "En attente";
+                            setTimeout(() => { updateStatus(); }, 1000);
+                            progressBar.querySelector('.bar').style.width = "20%";
+                            break;
+
+                        case "pending":
+                            document.querySelector(".status").innerText = "En cours";
+                            setTimeout(() => { updateStatus(); }, 1000);
+                            progressBar.querySelector('.bar').style.width = "60%";
+                            break;
+
+                        case "finished":
+                            document.querySelector(".status").innerText = "Terminée";
+                            progressBar.querySelector('.bar').style.width = "100%";
+                            break;
+                    }
                 })();
             }
 
