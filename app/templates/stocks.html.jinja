@@ -1,7 +1,4 @@
 {% from 'components/navbar.html.jinja' import navbar %}
-{% from 'components/footer.html.jinja' import footer %}
-{% from 'components/notifications.html.jinja' import notifications %}
-{% from 'components/popup.html.jinja' import popup %}
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -15,8 +12,6 @@
     </head>
     <body>
 
-        {{ notifications() }}
-        {{ popup() }}
         {{ navbar(type = "admin") }}
 
         <div class="hero">

@@ -1,4 +1,4 @@
-function createNotification(type, title, description) {
+function createNotification(type, title, description, timeout = 3) {
 
     let notification = document.createElement('div');
     notification.classList.add('notification');
@@ -28,10 +28,11 @@ function createNotification(type, title, description) {
     document.querySelector('.notifications').appendChild(notification);
 
     setTimeout(() => {
+        notification.querySelector('.progress-bar .bar').style.transition = `width ${timeout}s ease`;
         notification.querySelector('.progress-bar .bar').style.width = '100%';
 
         setTimeout(() => {
             notification.remove();
-        }, 2000);
+        }, timeout * 1000);
     }, 100);
 }

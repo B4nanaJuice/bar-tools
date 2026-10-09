@@ -46,7 +46,7 @@ function placeOrder() {
             const content = await rawResponse.json();
 
             if (rawResponse.status == 200) {
-                createNotification("success", "Commande passée", `Ta commande a bien été validée. Attends un peu et les boissons arriveront à toi !<br><a href="/order-status?order-id=${content.orderId}">Suivre ma commande</a>`);
+                createNotification("success", "Commande passée", `Ta commande a bien été validée. Attends un peu et les boissons arriveront à toi !<br><a href="/order-status?order-id=${content.orderId}" style="color: var(--coffee-bean); text-decoration: none;">Suivre ma commande</a>`, 5);
                 document.querySelector('.navbar').classList.remove('navbar-for-cart');
                 document.querySelector('.order-name input').value = '';
 
