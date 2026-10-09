@@ -18,7 +18,7 @@ function createNotification(type, title, description) {
 
     let notificationDesc = document.createElement('p');
     notificationDesc.classList.add('notification-description');
-    notificationDesc.innerText = description;
+    notificationDesc.innerHTML = description;
 
     notification.appendChild(notificationTitle);
     notification.appendChild(notificationDesc);
