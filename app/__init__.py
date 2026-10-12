@@ -11,7 +11,7 @@ def create_app():
     app.secret_key = os.environ["APP_SECRET"]
 
     from app.routes import home_page, api, admin, auth
-    from app.models import CocktailIngredient, CocktailTag, Cocktail, Ingredient, OrderItem, Order, Tag
+    from app.models import CocktailIngredient, CocktailTag, Cocktail, Ingredient, OrderItem, Order, OrderStatus, Tag
 
     @app.errorhandler(404)
     def page_not_found(e):

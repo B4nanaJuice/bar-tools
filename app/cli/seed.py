@@ -6,12 +6,29 @@ import json
 from app.database import db
 from app.models import Cocktail, CocktailIngredient, CocktailTag
 from app.models import Ingredient, Tag
+from app.models import OrderStatus
 
 @click.command("seed")
+@click.argument("filename")
 @with_appcontext
-def seed():
+def seed(filename: str):
 
-    with open("app/cli/seed_data.json", mode = "r", encoding = "utf-8") as f:
+    # Add order status
+    states = ["new", "pending", "finished"]
+    for i in range(3):
+        order_status = db.session.scalar(
+            db.select(OrderStatus).where(OrderStatus.id == i)
+        )
+
+        if order_status is None:
+            db.session.add(OrderStatus(
+                id = i,
+                state = states[i]
+            ))
+
+    db.session.flush()
+
+    with open(f"app/cli/{filename}", mode = "r", encoding = "utf-8") as f:
         data = json.load(fp = f)["cocktails"]
 
         click.echo(f"Loaded {len(data)} cocktails")

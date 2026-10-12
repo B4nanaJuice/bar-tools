@@ -3,6 +3,7 @@ from app.models.ingredient import Ingredient
 from app.models.tag import Tag
 from app.models.order import Order
 from app.models.order_item import OrderItem
+from app.models.order_status import OrderStatus
 
 from app.models.cocktail_ingredient import CocktailIngredient
 from app.models.cocktail_tag import CocktailTag
@@ -13,6 +14,7 @@ __all__: list[str] = [
     "Tag",
     "Order",
     "OrderItem",
+    "OrderStatus",
     "CocktailIngredient",
     "CocktailTag",
 ]
