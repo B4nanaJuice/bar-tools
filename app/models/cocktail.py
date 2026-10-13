@@ -13,5 +13,8 @@ class Cocktail(db.Model):
     tag_associations = db.relationship("CocktailTag", back_populates = "cocktail", cascade = "all, delete-orphan")
     order_items = db.relationship("OrderItem", back_populates = "cocktail")
 
+    glass_id = db.Column(db.Integer, db.ForeignKey("glass.id"), nullable = False)
+    glass = db.relationship("Glass", back_populates = "cocktails")
+
     def __repr__(self):
         return f"<Cocktail {self.name}>"

@@ -100,42 +100,15 @@
     & > div {
         display: flex;
         flex-direction: column;
+        gap: 24px;
     }
 
     & .search-title {
         font-size: 32px;
         text-align: center;
-        margin-bottom: 48px;
-    }
-
-    & .list {
-        height: 72px;
-        background: var(--coffee-bean);
-        border: solid var(--ghost-white) 2px;
-        padding: 6px;
-        display: flex;
-        justify-content: start;
-        gap: 6px;
-        flex-wrap: wrap;
-        overflow-y: scroll;
-
-        & .tag, & .ingredient {
-            font-size: 20px;
-            height: 24px;
-            border-radius: 12px;
-            background: #89B472;
-            color: var(--coffee-bean);
-            padding: 0 6px;
-            user-select: none;
-        }
-
-        & .tag:hover, & .ingredient:hover {
-            cursor: pointer;
-        }
     }
 
     & select {
-        margin-top: 24px;
         position: relative;
         appearance: none;
     }

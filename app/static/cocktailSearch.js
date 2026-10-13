@@ -1,7 +1,7 @@
 function addTagToSearch(selectNode, tagType) {
 
     let tag = document.createElement('span');
-    tag.classList.add(tagType);
+    tag.classList.add("pill");
     tag.id = selectNode.value;
     tag.index = selectNode.selectedIndex;
     tag.innerText = selectNode.options[selectNode.selectedIndex].text;
@@ -28,6 +28,8 @@ function startSearch() {
     ingredients.length != 0 ? target.searchParams.set('ingredients', ingredients.join(',')) : target.searchParams.delete('ingredients');
     tags.length != 0 ? target.searchParams.set('tags', tags.join(',')) : target.searchParams.delete('tags');
     name != "" ? target.searchParams.set('name', name) : target.searchParams.delete('name');
+
+    target.hash = "body";
 
     window.location = target;
 }

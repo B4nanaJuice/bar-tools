@@ -1,0 +1,30 @@
+/* OVERALL */
+.white-border {
+    border: solid var(--ghost-white) 2px;
+}
+
+/* PILLS */
+.pill-box {
+    background: none;
+    padding: 6px;
+    display: flex;
+    justify-content: start;
+    gap: 6px;
+    flex-wrap: wrap;
+
+    & .pill {
+        font-size: 20px;
+        line-height: 20px;
+        height: 24px;
+        border-radius: 12px;
+        background: #89B472; /* Base bg color */
+        color: var(--coffee-bean); /* Base color */
+        padding: 0 6px;
+        user-select: none;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+

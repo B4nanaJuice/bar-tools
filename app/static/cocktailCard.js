@@ -19,9 +19,9 @@ function generateCardTitle(sourceScript, text) {
 
 function showCocktailDetails(cocktailName, cocktailId, cocktailTags, cocktailIngredients) {
     document.querySelector('.popup-title').innerText = cocktailName;
-    document.querySelector('.popup-description').innerHTML = `
+    document.querySelector('.popup-description').innerHTML = (cocktailTags == 0 ? '' : `
         <p style="font-size: 28px;">Tags</p>
-        <p>${cocktailTags.join(' • ')}</p>
+        <div class="pill-box">${cocktailTags.map(tag => `<span class="pill">${tag}</span>`).join('')}</div>`) + `
         <p style="font-size: 28px; margin-top: 12px;">Ingrédients</p>
         <p>${cocktailIngredients.join(' • ')}</p>
     `;

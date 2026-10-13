@@ -30,3 +30,7 @@ def manage_stocks():
         return redirect(url_for("admin.manage_stocks"))
 
     return render_template("stocks.html.jinja", ingredients = ingredients)
+
+@page.route("/config", methods = ["GET", "POST"])
+def config():
+    pass

@@ -78,7 +78,7 @@ function addCocktailToOrder(cocktailName, cocktailId) {
 function refreshOrderTable() {
 
     let orderTable = document.querySelector('.navbar-cart table');
-    orderTable.innerHTML = `
+    orderTable.innerHTML = localStorage.length == 0 ? '' : `
         <tr>
             <th>Cocktail</th>
             <th>Quantité</th>

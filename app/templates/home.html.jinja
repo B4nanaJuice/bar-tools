@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename = 'popup.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename = 'notification.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename = 'progress-bar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'components.css') }}">
         <title>Cocktails - La niche</title>
     </head>
     <body>        
@@ -59,7 +60,7 @@
             </div>
         </div>
 
-        <div class="body">
+        <div class="body" id="body">
             <div class="body-content">
                 <div class="cocktails">
 
@@ -77,9 +78,9 @@
                             <script>
                                 var scriptTag = document.getElementsByTagName('script'); // Can't put 'let' or there will be "Redeclaration of let [...]"
                                 scriptTag = scriptTag[scriptTag.length - 1];
-                                generateCardTitle(scriptTag, "{{ cocktail.name }}")
+                                generateCardTitle(scriptTag, {{ cocktail.name | tojson }})
                             </script>
-                            <button class="card-cta" onclick='showCocktailDetails("{{ cocktail.name }}", {{ cocktail.id }}, {{ cocktail.tag_associations | map(attribute="tag.name") | map("capitalize") | list | tojson }}, {{ cocktail.ingredient_associations | map(attribute="ingredient.name") | map("capitalize") | list | tojson }})'>Détails</button>
+                            <button class="card-cta" onclick='showCocktailDetails({{ cocktail.name | tojson }}, {{ cocktail.id }}, {{ cocktail.tag_associations | map(attribute="tag.name") | map("capitalize") | list | tojson }}, {{ cocktail.ingredient_associations | map(attribute="ingredient.name") | map("capitalize") | list | tojson }})'>Détails</button>
                         </div>
                     {% endfor %}
 
