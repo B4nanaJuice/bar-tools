@@ -5,8 +5,8 @@ import json
 
 from app.database import db
 from app.models import Cocktail, CocktailIngredient, CocktailTag
-from app.models import Ingredient, Tag
-from app.models import OrderStatus
+from app.models import Ingredient, Tag, IngredientCategory
+from app.models import OrderStatus, Glass
 
 @click.command("seed")
 @click.argument("filename")
@@ -15,7 +15,7 @@ def seed(filename: str):
 
     # Add order status
     states = ["new", "pending", "finished"]
-    for i in range(3):
+    for i in range(len(states)):
         order_status = db.session.scalar(
             db.select(OrderStatus).where(OrderStatus.id == i)
         )
@@ -25,6 +25,19 @@ def seed(filename: str):
                 id = i,
                 state = states[i]
             ))
+
+    # Add ingredient categories
+    ingredient_categories = ["Spiritueux", "Crèmes - Liqueurs", "Jus", "Sirops", "Autres"]
+    for i in range(len(ingredient_categories)):
+            ingredient_category = db.session.scalar(
+                db.select(IngredientCategory).where(IngredientCategory.id == i)
+            )
+    
+            if ingredient_category is None:
+                db.session.add(IngredientCategory(
+                    id = i,
+                    name = ingredient_categories[i]
+                ))
 
     db.session.flush()
 
@@ -66,6 +79,22 @@ def seed(filename: str):
 
         tags[name] = tag
 
+    # Verres
+    glass_data = [cocktail["glass"] for cocktail in data]
+    glass_data = list(set(glass_data))
+    glasses = {}
+
+    for name in glass_data:
+        glass = db.session.scalar(
+            db.select(Glass).where(Glass.name == name)
+        )
+
+        if glass is None:
+            glass = Glass(name = name)
+            db.session.add(glass)
+
+        glasses[name] = glass
+
     db.session.flush()
 
     # Cocktails
@@ -77,7 +106,8 @@ def seed(filename: str):
         if cocktail is None:
             cocktail = Cocktail(
                 name = cocktail_data["name"],
-                description = cocktail_data["description"]
+                description = cocktail_data["description"],
+                glass = glasses[cocktail_data["glass"]]
             )
 
             db.session.add(cocktail)

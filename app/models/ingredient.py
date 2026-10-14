@@ -11,5 +11,8 @@ class Ingredient(db.Model):
 
     cocktail_associations = db.relationship("CocktailIngredient", back_populates = "ingredient", cascade = "all, delete-orphan")
 
+    category_id = db.Column(db.Integer, db.ForeignKey("ingredient_categories.id"), nullable = False, default = 4, server_default = db.text("4"))
+    category = db.relationship("IngredientCategory", back_populates = "ingredients")
+
     def __repr__(self):
         return f"<Ingredient {self.name}>"
