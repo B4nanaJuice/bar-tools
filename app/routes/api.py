@@ -61,6 +61,22 @@ def get_order_status():
     except:
         return jsonify({"status": None}), 400
 
+@page.get('/get-cocktail')
+def get_cocktail():
+
+    try:
+        cocktail_id = request.args.get("cocktail-id")
+        cocktail_id = int(cocktail_id)
+
+        cocktail = db.session.scalar(db.select(Cocktail).where(Cocktail.id == cocktail_id))
+
+        if cocktail is None:
+            return jsonify({"cocktail": None}), 400
+
+        return jsonify({"cocktail": cocktail.to_dict()}), 200
+    except:
+        return jsonify({"cocktail": None}), 400
+
 @page.post('/update-order-status')
 def update_order_stats() :
 

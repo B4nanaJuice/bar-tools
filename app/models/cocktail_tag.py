@@ -18,3 +18,6 @@ class CocktailTag(db.Model):
             name="uq_cocktail_tag"
         ),
     )
+
+    def to_dict(self):
+        return self.tag.to_dict()

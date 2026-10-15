@@ -80,7 +80,7 @@
                                 scriptTag = scriptTag[scriptTag.length - 1];
                                 generateCardTitle(scriptTag, {{ cocktail.name | tojson }})
                             </script>
-                            <button class="card-cta" onclick='showCocktailDetails({{ cocktail.name | tojson }}, {{ cocktail.id }}, {{ cocktail.tag_associations | map(attribute="tag.name") | map("capitalize") | list | tojson }}, {{ cocktail.ingredient_associations | map(attribute="ingredient.name") | map("capitalize") | list | tojson }})'>Détails</button>
+                            <button class="card-cta" onclick='showCocktailDetails({{ cocktail.id }})'>Détails</button>
                         </div>
                     {% endfor %}
 

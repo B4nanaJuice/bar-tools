@@ -12,7 +12,7 @@ class Order(db.Model):
 
     items = db.relationship("OrderItem", back_populates = "order", cascade = "all, delete-orphan")
 
-    status_id = db.Column(db.Integer, db.ForeignKey("order_status.id"), nullable = False)
+    status_id = db.Column(db.Integer, db.ForeignKey("order_status.id"), nullable = False, default = 0, server_default = db.text('0'))
     status = db.relationship("OrderStatus", back_populates = "orders")
 
     def __repr__(self):

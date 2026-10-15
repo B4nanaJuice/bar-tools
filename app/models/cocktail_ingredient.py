@@ -13,3 +13,9 @@ class CocktailIngredient(db.Model):
 
     cocktail = db.relationship("Cocktail", back_populates = "ingredient_associations")
     ingredient = db.relationship("Ingredient", back_populates = "cocktail_associations")
+
+    def to_dict(self):
+        return {
+            "quantity": self.quantity,
+            "unit": self.unit
+        } | self.ingredient.to_dict()

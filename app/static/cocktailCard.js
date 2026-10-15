@@ -17,21 +17,39 @@ function generateCardTitle(sourceScript, text) {
     target.style.fontSize = `${fontSize}px`;
 }
 
-function showCocktailDetails(cocktailName, cocktailId, cocktailTags, cocktailIngredients) {
-    document.querySelector('.popup-title').innerText = cocktailName;
-    document.querySelector('.popup-description').innerHTML = (cocktailTags == 0 ? '' : `
-        <p style="font-size: 28px;">Tags</p>
-        <div class="pill-box">${cocktailTags.map(tag => `<span class="pill">${tag}</span>`).join('')}</div>`) + `
-        <p style="font-size: 28px; margin-top: 12px;">Ingrédients</p>
-        <p>${cocktailIngredients.join(' • ')}</p>
-    `;
+function showCocktailDetails(cocktailId) {
+    (async () => {
+        const rawResponse = await fetch(`/api/get-cocktail?cocktail-id=${cocktailId}`, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
 
-    document.querySelector('.popup-content .primary-button').onclick = (e) => {
-        addCocktailToOrder(cocktailName, cocktailId);
-        document.querySelector('.popup').classList.remove('popup-open');
-    }
+        const content = await rawResponse.json();
 
-    document.querySelector('.popup-content .primary-button p').innerText = "Ajouter";
+        if (rawResponse.status == 200) {
+            document.querySelector('.popup-title').innerText = content.cocktail.name;
+            document.querySelector('.popup-description').innerHTML = `
+                <div class="pill-box">
+                    ${content.cocktail.tags.map(tag => `<span class="pill" style="background-color: ${tag.color}">${tag.name}</span>`).join('')}
+                </div>
+                <ul style="margin-top: 24px;">
+                    ${content.cocktail.ingredients.map(ing => `<li>${ing.name}</li>`).join('')}
+                </ul>
+            `;
 
-    document.querySelector('.popup').classList.add('popup-open');
+            document.querySelector('.popup-content .primary-button').onclick = (e) => {
+                addCocktailToOrder(content.cocktail.name, content.cocktail.id);
+                document.querySelector('.popup').classList.remove('popup-open');
+            }
+
+            document.querySelector('.popup-content .primary-button p').innerText = "Ajouter";
+
+            document.querySelector('.popup').classList.add('popup-open');
+        } else {
+            createNotification("error", "Woops", "Quelque chose s'est mal passé...");
+        }
+    })();
 }

@@ -16,3 +16,12 @@ class Ingredient(db.Model):
 
     def __repr__(self):
         return f"<Ingredient {self.name}>"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "is_available": self.is_available,
+            "color": f"#{self.color}",
+            "category": self.category.to_dict()
+        }

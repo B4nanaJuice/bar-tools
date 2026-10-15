@@ -40,30 +40,15 @@
                                 <div class="table-column show-order-description can-open-description">
                                     <div class="table-row can-open-description">
                                         <select name="order-status" id="order-status" onchange="updateOrderStatus(this, {{ order.id }})">
-                                            {% if order.status.state == "new" %}
-                                                <option value="new" selected>Nouveau</option>
-                                                <option value="pending">En cours</option>
-                                                <option value="finished">Terminé</option>
-                                            {% elif order.status.state == "pending" %}
-                                                <option value="new">Nouveau</option>
-                                                <option value="pending" selected>En cours</option>
-                                                <option value="finished">Terminé</option>
-                                            {% else %}
-                                                <option value="new">Nouveau</option>
-                                                <option value="pending">En cours</option>
-                                                <option value="finished" selected>Terminé</option>
-                                            {% endif %}
+                                            {% for state in ["new", "pending", "finished"] %}
+                                                <option value="{{state}}" {{ "selected" if order.status.state == state else "" }}>{{ state }}</option>
+                                            {% endfor %}
                                         </select>
                                         <p class="can-open-description">{{ order.customer_name }}</p>
                                     </div>
                                     <div class="table-column order-description hidden">
                                         {% for item in order.items %}
-                                            {% set result = [] %}
-                                            {% for ingredient in item.cocktail.ingredient_associations %}
-                                                {% set _ = result.append([ingredient.ingredient.name, ingredient.quantity, ingredient.unit]) %}
-                                            {% endfor %}
-
-                                            <div class="table-row order-item" onclick='showRecipe("{{ item.cocktail.name }}", {{ result | tojson }})'>
+                                            <div class="table-row order-item" onclick='showRecipe({{ item.cocktail.id }})'>
                                                 <p>{{ item.cocktail.name }}</p>
                                                 <p>{{ item.quantity }}</p>
                                             </div>
@@ -87,22 +72,38 @@
                 });
             });
 
-            function showRecipe(cocktailName, ingredients) {
-                // Ingredients: [(name, quantity, measure), (name, qty, measure), (name, qty, measure)]
-                document.querySelector('.popup-title').innerText = cocktailName;
-                document.querySelector('.popup-description').innerHTML = `
-                    <ul>
-                        ${ingredients.map((i => `<li>${i[1]} ${i[2]} ${i[0]}</li>`)).join('')}
-                    </ul>
-                `;
+            function showRecipe(cocktailId) {
+                (async () => {
+                    const rawResponse = await fetch(`/api/get-cocktail?cocktail-id=${cocktailId}`, {
+                        method: "GET",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
 
-                document.querySelector('.popup-content .primary-button').onclick = (e) => {
-                    document.querySelector('.popup').classList.remove('popup-open');
-                }
+                    const content = await rawResponse.json();
 
-                document.querySelector('.popup-content .primary-button p').innerText = "Valider";
+                    if (rawResponse.status == 200) {
+                        document.querySelector('.popup-title').innerText = content.cocktail.name;
+                        document.querySelector('.popup-description').innerHTML = `
+                            <ul>
+                                ${content.cocktail.ingredients.map(ing => `<li>${ing.quantity} ${ing.unit} ${ing.name}</li>`).join('')}
+                            </ul>
+                        `;
 
-                document.querySelector('.popup').classList.add('popup-open');
+                        document.querySelector('.popup-content .primary-button').onclick = (e) => {
+                            addCocktailToOrder(content.cocktail.name, content.cocktail.id);
+                            document.querySelector('.popup').classList.remove('popup-open');
+                        }
+
+                        document.querySelector('.popup-content .primary-button p').innerText = "Terminé";
+
+                        document.querySelector('.popup').classList.add('popup-open');
+                    } else {
+                        createNotification("error", "Woops", "Quelque chose s'est mal passé...");
+                    }
+                })();
             }
 
             function updateOrderStatus(selectNode, orderId) {
