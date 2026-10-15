@@ -1,4 +1,4 @@
-{% macro navbar(type = "basic") %}
+{% macro navbar(type = "basic", ingredients = [], tags = [], ingredient_categories = []) %}
 
     <div class="navbar">
         <div class="navbar-title">La niche</div>
@@ -40,8 +40,14 @@
                     
                     <select name="ingredient-search-select" id="ingredient-search-select" onchange="addTagToSearch(this, 'ingredient')">
                         <option selected hidden disabled>Choisir...</option>
-                        {% for ingredient in ingredients %}
-                            <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                        {% for cat in ingredient_categories %}
+                            <optgroup label="{{ cat.name }}">
+                                {% for ingredient in ingredients | sort(attribute = "name") %}
+                                    {% if ingredient.category.id == cat.id %}
+                                        <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </optgroup>
                         {% endfor %}
                     </select>
                 </div>

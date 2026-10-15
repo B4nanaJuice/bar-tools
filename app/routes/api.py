@@ -3,7 +3,7 @@ import os
 import re
 
 from app.database import db
-from app.models import Cocktail, Tag, Ingredient, Order, OrderItem
+from app.models import Cocktail, Tag, Ingredient, Order, OrderItem, OrderStatus, IngredientCategory
 
 page = Blueprint("api", __name__, url_prefix = '/api')
 
@@ -69,15 +69,92 @@ def update_order_stats() :
 
     data = request.json
     order_id = data['order_id']
+    status = data["status"]
     order = db.session.scalar(db.select(Order).where(Order.id == order_id))
+    status = db.session.scalar(db.select(OrderStatus).where(OrderStatus.state == status))
 
     if order is None:
         return jsonify({"message": "Aucune commande n'existe avec cet ID."}), 400
+    if status is None:
+        return jsonify({"message": "Le status entré est invalide."}), 400
 
     try:
-        order.status = data["status"]
+        order.status = status
         db.session.commit()
     except:
         return jsonify({"message": "Quelque chose s'est mal passé..."}), 400
 
-    return jsonify({"message": "Le statut de la commande a bien été changé.", "status": data["status"]}), 200
+    return jsonify({"message": "Le statut de la commande a bien été changé.", "status": status.state}), 200
+
+@page.post('/update-tag-color')
+def update_tag_color():
+
+    if "id" not in session or session["id"] != os.environ["ADMIN_ID"]:
+        return jsonify({"message": "Tu dois être connecté pour accéder à cette fonctionnalité."}), 401
+    
+    data = request.json
+    tag_id = data["tag_id"]
+    color = data["color"].lower()
+    tag = db.session.scalar(db.select(Tag).where(Tag.id == tag_id))
+
+    if tag is None:
+        return jsonify({"message": "Aucun tag n'existe avec cet ID."}), 400
+    if re.match(r'^[0-9a-fA-F]{6}$', color) is None:
+        return jsonify({"message": "Le format de la couleur est invalide."}), 400
+
+    try:
+        tag.color = color
+        db.session.commit()
+    except:
+        return jsonify({"message": "Quelque chose s'est mal passé..."}), 400
+
+    return jsonify({"message": "La couleur du tag a bien été changée.", "color": color}), 200
+
+@page.post('/update-ingredient-color')
+def update_ingredient_color():
+
+    if "id" not in session or session["id"] != os.environ["ADMIN_ID"]:
+        return jsonify({"message": "Tu dois être connecté pour accéder à cette fonctionnalité."}), 401
+    
+    data = request.json
+    ingredient_id = data["ingredient_id"]
+    color = data["color"].lower()
+    ingredient = db.session.scalar(db.select(Ingredient).where(Ingredient.id == ingredient_id))
+
+    if ingredient is None:
+        return jsonify({"message": "Aucun ingrédient n'existe avec cet ID."}), 400
+    if re.match(r'^[0-9a-fA-F]{6}$', color) is None:
+        return jsonify({"message": "Le format de la couleur est invalide."}), 400
+
+    try:
+        ingredient.color = color
+        db.session.commit()
+    except:
+        return jsonify({"message": "Quelque chose s'est mal passé..."}), 400
+
+    return jsonify({"message": "La couleur de l'ingrédient a bien été changée.", "color": color}), 200
+
+@page.post('/update-ingredient-category')
+def update_ingredient_category():
+
+    if "id" not in session or session["id"] != os.environ["ADMIN_ID"]:
+        return jsonify({"message": "Tu dois être connecté pour accéder à cette fonctionnalité."}), 401
+    
+    data = request.json
+    ingredient_id = data["ingredient_id"]
+    category = data["category"].lower()
+    ingredient = db.session.scalar(db.select(Ingredient).where(Ingredient.id == ingredient_id))
+    category = db.session.scalar(db.select(IngredientCategory).where(IngredientCategory.name == category))
+
+    if ingredient is None:
+        return jsonify({"message": "Aucun ingrédient n'existe avec cet ID."}), 400
+    if category is None:
+        return jsonify({"message": "La catégorie indiquée est invalide."}), 400
+
+    try:
+        ingredient.category = category
+        db.session.commit()
+    except:
+        return jsonify({"message": "Quelque chose s'est mal passé..."}), 400
+
+    return jsonify({"message": "La catégorie de l'ingrédient a bien été changée.", "category": category.name}), 200

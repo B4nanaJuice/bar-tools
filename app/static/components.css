@@ -28,3 +28,57 @@
     }
 }
 
+/* TABLE */
+table {
+    border-collapse: collapse;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    margin: auto;
+
+    &.table-dark {
+        color: var(--ghost-white);
+        border-color: var(--ghost-white);
+
+        & tr:nth-child(2n) {
+            background-color: rgba(from var(--champagne-mist) r g b/.1);
+        }
+    }
+
+    &.table-light {
+        color: var(--coffee-bean);
+        border-color: var(--coffee-bean);
+
+        & tr:nth-child(2n) {
+            background-color: rgba(from var(--coffee-bean) r g b/.1);
+        }
+    }
+
+    & tr {
+        &:not(:first-child) {
+            border-top-style: solid;
+            border-top-width: 2px;
+        }
+    }
+
+    & th, & td {
+        font-size: 24px;
+        padding: 16px 12px;
+        text-align: left;
+
+        &.text-right {
+            text-align: right;
+        }
+
+        &.text-center {
+            text-align: center;
+        }
+    }
+}
+
+/* FORM */
+input, select {
+    border: none;
+    background-color: none;
+}

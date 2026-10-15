@@ -35,16 +35,16 @@
                         </th>
                     </tr>
                     {% for order in orders %}
-                        <tr class="{{ 'finished-order' if order.status == 'finished' else '' }}">
+                        <tr class="{{ 'finished-order' if order.status.state == 'finished' else '' }}">
                             <td>
                                 <div class="table-column show-order-description can-open-description">
                                     <div class="table-row can-open-description">
                                         <select name="order-status" id="order-status" onchange="updateOrderStatus(this, {{ order.id }})">
-                                            {% if order.status == "new" %}
+                                            {% if order.status.state == "new" %}
                                                 <option value="new" selected>Nouveau</option>
                                                 <option value="pending">En cours</option>
                                                 <option value="finished">Terminé</option>
-                                            {% elif order.status == "pending" %}
+                                            {% elif order.status.state == "pending" %}
                                                 <option value="new">Nouveau</option>
                                                 <option value="pending" selected>En cours</option>
                                                 <option value="finished">Terminé</option>

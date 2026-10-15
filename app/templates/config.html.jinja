@@ -1,0 +1,152 @@
+{% from 'components/navbar.html.jinja' import navbar %}
+{% from 'components/notifications.html.jinja' import notifications %}
+
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'navbar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'notification.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'progress-bar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'components.css') }}">
+        <title>Commandes - La niche</title>
+    </head>
+    <body>
+
+        {{ notifications() }}
+        {{ navbar(type = "admin") }}
+
+        <div class="hero">
+            <div class="hero-content">
+                
+                <h1>Ingrédients</h1>
+                <table class="table-dark" style="width: 100%;">
+                    <tr>
+                        <th style="width: 50%;">Ingrédient</th>
+                        <th class="text-right">Catégorie</th>
+                        <th class="text-right">Couleur</th>
+                    </tr>
+                    {% for ingredient in ingredients %}
+                        <tr>
+                            <td>
+                                <div class="pill-box">
+                                    <span class="pill pill-ingredient-{{ingredient.id}}" style="background-color: #{{ ingredient.color }}">{{ ingredient.name }}</span>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <select name="" id="" onchange="updateIngredientCategory({{ ingredient.id }}, this.value);">
+                                    
+                                    {% for ingredient_category in ["spirit", "liquor", "juice", "syrup", "other"] %}
+                                        <option value="{{ ingredient_category }}" {{ "selected" if ingredient.category.name == ingredient_category else "" }}>{{ ingredient_category }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td class="text-right">
+                                <input type="color" name="" id="" value="#{{ ingredient.color }}" onchange="updateIngredientColor({{ ingredient.id }}, this.value);" />
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <h1>Tags</h1>
+                <table class="table-dark" style="width: 100%;">
+                    <tr>
+                        <th>Tag</th>
+                        <th class="text-right">Couleur</th>
+                    </tr>
+                    {% for tag in tags %}
+                        <tr>
+                            <td>
+                                <div class="pill-box">
+                                    <span class="pill pill-tag-{{tag.id}}" style="background-color: #{{ tag.color }}">{{ tag.name }}</span>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <input type="color" name="" id="" value="#{{ tag.color }}" onchange="updateTagColor({{ tag.id }}, this.value);" />
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+        </div>
+    </body>
+
+    <script>
+        function updateIngredientCategory(ingredientId, category) {
+            (async () => {
+                const rawResponse = await fetch('/api/update-ingredient-category', {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "ingredient_id": ingredientId,
+                        "category": category
+                    })
+                });
+
+                const content = await rawResponse.json();
+
+                if (rawResponse.status == 200) {
+                    createNotification("success", "Catégorie changée", content.message);
+                } else {
+                    createNotification("error", "Woops", content.message);
+                }
+            })();
+        }
+
+        function updateIngredientColor(ingredientId, color) {
+            (async () => {
+                const rawResponse = await fetch('/api/update-ingredient-color', {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "ingredient_id": ingredientId,
+                        "color": color.replace("#", "")
+                    })
+                });
+
+                const content = await rawResponse.json();
+
+                if (rawResponse.status == 200) {
+                    createNotification("success", "Couleur changée", content.message);
+                    document.querySelector(`.pill-ingredient-${ingredientId}`).style.backgroundColor = `#${content.color}`;
+                } else {
+                    createNotification("error", "Woops", content.message);
+                }
+            })();
+        }
+
+        function updateTagColor(tagId, color) {
+            (async () => {
+                const rawResponse = await fetch('/api/update-tag-color', {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "tag_id": tagId,
+                        "color": color.replace("#", "")
+                    })
+                });
+
+                const content = await rawResponse.json();
+
+                if (rawResponse.status == 200) {
+                    createNotification("success", "Couleur changée", content.message);
+                    document.querySelector(`.pill-tag-${tagId}`).style.backgroundColor = `#${content.color}`;
+                } else {
+                    createNotification("error", "Woops", content.message);
+                }
+            })();
+        }
+    </script>
+</html>

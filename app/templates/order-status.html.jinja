@@ -41,7 +41,7 @@
                     const content = await rawResponse.json();
                     let progressBar = document.querySelector('.progress-bar');                    
 
-                    switch (content.status) {
+                    switch (content.status.state) {
                         case "new":
                             document.querySelector(".status").innerText = "En attente";
                             setTimeout(() => { updateStatus(); }, 1000);

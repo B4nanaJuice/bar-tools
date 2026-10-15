@@ -27,7 +27,8 @@ def seed(filename: str):
             ))
 
     # Add ingredient categories
-    ingredient_categories = ["Spiritueux", "Crèmes - Liqueurs", "Jus", "Sirops", "Autres"]
+    # ingredient_categories = ["Spiritueux", "Crèmes - Liqueurs", "Jus", "Sirops", "Autres"]
+    ingredient_categories = ["spirit", "liquor", "juice", "syrup", "other"]
     for i in range(len(ingredient_categories)):
             ingredient_category = db.session.scalar(
                 db.select(IngredientCategory).where(IngredientCategory.id == i)

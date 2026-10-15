@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, url_for, request
 from sqlalchemy import func
 
 from app.database import db
-from app.models import Cocktail, Tag, Ingredient, CocktailIngredient, CocktailTag
+from app.models import Cocktail, Tag, Ingredient, CocktailIngredient, CocktailTag, IngredientCategory
 
 page = Blueprint("home", __name__)
 
@@ -43,8 +43,10 @@ def index():
     endpoint_args = request.args.to_dict()
     if "page" in endpoint_args:
         del endpoint_args["page"]
+
+    ingredient_categories = IngredientCategory.query.all()
     
-    return render_template("home.html.jinja", pagination = page, tags = tags, ingredients = ingredients, endpoint = request.endpoint, args = endpoint_args)
+    return render_template("home.html.jinja", pagination = page, tags = tags, ingredients = ingredients, endpoint = request.endpoint, args = endpoint_args, ingredient_categories = ingredient_categories)
 
 @page.get("/order-status")
 def order_status():
