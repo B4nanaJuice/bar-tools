@@ -57,7 +57,7 @@ def get_order_status():
         if order is None:
             return jsonify({"status": None}), 400
 
-        return jsonify({"status": order.status}), 200
+        return jsonify({"status": order.status.state}), 200
     except:
         return jsonify({"status": None}), 400
 

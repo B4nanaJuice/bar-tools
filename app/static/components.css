@@ -82,3 +82,18 @@ input, select {
     border: none;
     background-color: none;
 }
+
+/* PROGRESS BAR */
+.progress-bar {
+    height: 24px;
+    background: rgba(from var(--champagne-mist) r g b/.1);
+    width: 100%;
+    display: block;
+
+    & .bar {
+        height: 24px;
+        background: var(--champagne-mist);
+        width: 0%;
+        transition: width 2s ease;
+    }
+}

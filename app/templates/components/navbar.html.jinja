@@ -1,3 +1,6 @@
+{% from 'components/navbar-orders.html.jinja' import navbar_orders %}
+{% from 'components/navbar-search.html.jinja' import navbar_search %}
+
 {% macro navbar(type = "basic", ingredients = [], tags = [], ingredient_categories = []) %}
 
     <div class="navbar">
@@ -17,13 +20,13 @@
                     </svg>
                 </button>
             {% elif type == "basic" %}
-                <button class="toggle-navbar-for-search icon-only" onclick="document.querySelector('.navbar').classList.toggle('navbar-for-search'); document.querySelector('.navbar').classList.remove('navbar-for-cart');">
+                <button class="toggle-navbar-for-search icon-only" onclick="document.querySelector('.navbar').classList.toggle('navbar-for-search'); document.querySelector('.navbar').classList.remove('navbar-for-orders');">
                     <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M37 37L28.3 28.3M33 17C33 25.8366 25.8366 33 17 33C8.16344 33 1 25.8366 1 17C1 8.16344 8.16344 1 17 1C25.8366 1 33 8.16344 33 17Z" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
                 <div></div>
-                <button class="toggle-navbar-for-cart icon-only" onclick="document.querySelector('.navbar').classList.toggle('navbar-for-cart'); document.querySelector('.navbar').classList.remove('navbar-for-search');">
+                <button class="toggle-navbar-for-orders icon-only" onclick="document.querySelector('.navbar').classList.toggle('navbar-for-orders'); document.querySelector('.navbar').classList.remove('navbar-for-search');">
                     <svg viewBox="0 0 38 42" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M37 9V37C37 38.0609 36.5786 39.0783 35.8284 39.8284C35.0783 40.5786 34.0609 41 33 41H5C3.93913 41 2.92172 40.5786 2.17157 39.8284C1.42143 39.0783 1 38.0609 1 37V9L7 1H31L37 9ZM1 9H37M27 17C27 19.1217 26.1571 21.1566 24.6569 22.6569C23.1566 24.1571 21.1217 25 19 25C16.8783 25 14.8434 24.1571 13.3431 22.6569C11.8429 21.1566 11 19.1217 11 17" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -33,73 +36,10 @@
         </div>
 
         {% if type == "basic" %}
-            <div class="navbar-search">
-                <div class="ingredient-search">
-                    <h1 class="search-title">Ingrédients</h1>
-                    <div class="ingredient-list pill-box white-border"></div>
-                    
-                    <select name="ingredient-search-select" id="ingredient-search-select" onchange="addTagToSearch(this, 'ingredient')">
-                        <option selected hidden disabled>Choisir...</option>
-                        {% for cat in ingredient_categories %}
-                            <optgroup label="{{ cat.name }}">
-                                {% for ingredient in ingredients | sort(attribute = "name") %}
-                                    {% if ingredient.category.id == cat.id %}
-                                        <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </optgroup>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="tag-search">
-                    <h1 class="search-title">Tags</h1>
-                    <div class="tag-list pill-box white-border"></div>
-
-                    <select name="tag-search-select" id="tag-search-select" onchange="addTagToSearch(this, 'tag')">
-                        <option selected hidden disabled>Choisir...</option>
-                        {% for tag in tags | sort(attribute = "name") %}
-                            <option value="{{ tag.id }}">{{ tag.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="name-search">
-                    <h1 class="search-title">Nom</h1>
-                    <input type="text">
-                </div>
-
-                <div class="search-action">
-                    <button onclick="startSearch();">
-                        Rechercher
-                        <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M37 37L28.3 28.3M33 17C33 25.8366 25.8366 33 17 33C8.16344 33 1 25.8366 1 17C1 8.16344 8.16344 1 17 1C25.8366 1 33 8.16344 33 17Z" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <script src="{{ url_for('static', filename = 'cocktailSearch.js') }}"></script>
-            </div>
-
-            <div class="navbar-cart">
-                <table>
-                    <tr>
-                        <th>Cocktail</th>
-                        <th>Quantité</th>
-                        <th>Supprimer</th>
-                    </tr>
-                </table>
-
-                <div class="form-row">
-                    <label for="order-name" class="order-name">
-                        Nom :
-                        <input type="text" id="order-name">
-                    </label>
-                    <button class="place-order" onclick="placeOrder();">Placer la commande</button>
-                </div>
-
-                <script src="{{ url_for('static', filename = 'cocktailOrder.js') }}"></script>
-            </div>
+            
+            {{ mavbar_search(ingredients, tags, ingredient_categories) }}
+            {{ navbar_orders() }}
+            
         {% endif %}
     </div>
 

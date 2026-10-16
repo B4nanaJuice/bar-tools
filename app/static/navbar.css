@@ -44,7 +44,7 @@
             height: 48px;
         }
 
-        & .toggle-navbar-for-cart {
+        & .toggle-navbar-for-orders {
             position: relative;
 
             & .cart-size {
@@ -203,7 +203,7 @@
 }
 
 /* NAVBAR FOR CART */
-.navbar-cart {
+.navbar-orders {
     display: none;
 
     & table {
@@ -284,19 +284,19 @@
     }
 }
 
-.navbar-for-cart {
-    & .navbar-cart {
+.navbar-for-orders {
+    & .navbar-orders {
         display: block;
         margin: 48px 0;
     }
 
-    & .toggle-navbar-for-cart svg {
+    & .toggle-navbar-for-orders svg {
         opacity: .1;
     }
 }
 
 @media screen and (max-width: 416px) {
-    .navbar-cart {
+    .navbar-orders {
         & table {
             & th, & td {
                 font-size: 16px;

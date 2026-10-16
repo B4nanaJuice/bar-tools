@@ -11,24 +11,31 @@ function placeOrder() {
         return;
     }
 
+    let order = {};
+    let orderNames = {};
+    let toRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+
+        if (key.match(/^[0-9]*_.*$/)) {
+            let [cocktailId, cocktailName] = key.split('_');
+            let quantity = localStorage.getItem(key);
+
+            order[cocktailId] = quantity;
+            orderNames[cocktailName] = quantity;
+            toRemove.push(key);
+        }
+    }
+
     document.querySelector('.popup-title').innerText = "Valider la commande ?";
-    document.querySelector('.popup-description').innerText = "order items here";
+    document.querySelector('.popup-description').innerHTML = `
+        <ul>
+            ${Object.entries(orderNames).map(o => `<li>${o[1]} ${o[0]}</li>`).join('')}
+        </ul>
+    `;
 
     document.querySelector('.popup-content .primary-button').onclick = (e) => {
-        let order = { name: name };
-        let toRemove = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            let key = localStorage.key(i);
-            console.log(`key: ${key}`)
-            if (key.match(/^[0-9]*_.*$/)) {
-                console.log('The key matches !')
-                let cocktailId = key.split('_')[0];
-                let quantity = localStorage.getItem(key);
-
-                order[cocktailId] = quantity;
-                toRemove.push(key);
-            }
-        }
+        order.name = name;
 
         // Send command to api
         (async () => {
@@ -44,16 +51,18 @@ function placeOrder() {
             console.log(rawResponse)
 
             const content = await rawResponse.json();
+            console.log(content);
 
             if (rawResponse.status == 200) {
-                createNotification("success", "Commande passée", `Ta commande a bien été validée. Attends un peu et les boissons arriveront à toi !<br><a href="/order-status?order-id=${content.orderId}" style="color: var(--coffee-bean); text-decoration: none;">Suivre ma commande</a>`, 5);
-                document.querySelector('.navbar').classList.remove('navbar-for-cart');
+                createNotification("success", "Commande passée", `Ta commande a bien été validée !`, 5);
+                document.querySelector('.navbar').classList.remove('navbar-for-orders');
                 document.querySelector('.order-name input').value = '';
 
                 for (let i = 0; i < toRemove.length; i++) {
                     localStorage.removeItem(toRemove[i]);
                 }
 
+                followNewOrder(content.orderId);
                 refreshOrderTable();
             } else {
                 createNotification("error", "Woops", content.message);
@@ -75,59 +84,121 @@ function addCocktailToOrder(cocktailName, cocktailId) {
     refreshOrderTable();
 }
 
+function getCurrentOrder() {
+    let currentOrder = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        if (key.match(/^[0-9]*_.*$/)) {
+            let [cocktailId, cocktailName] = key.split('_');
+            let quantity = localStorage.getItem(key);
+
+            currentOrder.push({
+                id: parseInt(cocktailId),
+                name: cocktailName,
+                quantity: parseInt(quantity),
+                key: key
+            });
+        }
+    }
+
+    console.log(currentOrder);
+    return currentOrder;
+}
+
 function refreshOrderTable() {
 
-    let orderTable = document.querySelector('.navbar-cart table');
-    orderTable.innerHTML = localStorage.length == 0 ? '' : `
+    let orderSection = document.querySelector('.navbar-orders');
+    let orderTable = orderSection.querySelector('table');
+    let orderForm = orderSection.querySelector('.form-row');
+    let currentOrder = getCurrentOrder();
+
+    orderTable.style.display = currentOrder.length == 0 ? 'none' : 'block';
+    orderForm.style.display = currentOrder.length == 0 ? 'none' : 'flex';
+
+    orderTable.innerHTML = `
         <tr>
             <th>Cocktail</th>
-            <th>Quantité</th>
-            <th>Supprimer</th>
+            <th class="text-right" style="width: 20%">Quantité</th>
+            <th class="text-right" style="width: 10%">Supprimer</th>
         </tr>
     `;
 
     let cartSize = 0;
 
-    for (let i = 0; i < localStorage.length; i++) {
+    for (let orderItem of currentOrder) {
 
-        let key = localStorage.key(i);
-        if (key.match(/^[0-9]*_.*$/)) {
-            let [cocktailId, cocktailName] = key.split('_');
-            let quantity = parseInt(localStorage.getItem(key) || 1);
-            cartSize += parseInt(quantity);
+        cartSize += orderItem.quantity;
+        let tableRow = document.createElement('tr');
 
-            let tableRow = document.createElement('tr');
+        tableRow.innerHTML = `
+            <td>${orderItem.name}</td>
+            <td class="text-right">
+                <div>
+                    <button class="${orderItem.quantity == 1 ? 'muted' : ''} icon-only" onclick="removeCocktailQuantity('${orderItem.key}')">
+                        <svg width="16" height="2" viewBox="0 0 16 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1H15" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <p class="order-quantity">${orderItem.quantity}</p>
+                    <button class="icon-only" onclick="addCocktailQuantity('${orderItem.key}')">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 1V15M1 8H15" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </td>
+            <td class="text-right">
+                <div>
+                    <button class="icon-only" onclick="removeCocktailFromOrder('${orderItem.key}')">
+                        <svg width="24" height="24" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 5H3M3 5H19M3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H15C15.5304 21 16.0391 20.7893 16.4142 20.4142C16.7893 20.0391 17 19.5304 17 19V5M6 5V3C6 2.46957 6.21071 1.96086 6.58579 1.58579C6.96086 1.21071 7.46957 1 8 1H12C12.5304 1 13.0391 1.21071 13.4142 1.58579C13.7893 1.96086 14 2.46957 14 3V5M8 10V16M12 10V16" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </td>
+        `;
 
-            tableRow.innerHTML = `
-                <td>${cocktailName}</td>
-                <td>
-                    <div>
-                        <button class="${quantity == 1 ? 'muted' : ''} icon-only" onclick="removeCocktailQuantity('${key}')">
-                            <svg width="16" height="2" viewBox="0 0 16 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1H15" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                        <p class="order-quantity">${quantity}</p>
-                        <button class="icon-only" onclick="addCocktailQuantity('${key}')">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 1V15M1 8H15" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <button class="icon-only" onclick="removeCocktailFromOrder('${key}')">
-                            <svg width="24" height="24" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 5H3M3 5H19M3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H15C15.5304 21 16.0391 20.7893 16.4142 20.4142C16.7893 20.0391 17 19.5304 17 19V5M6 5V3C6 2.46957 6.21071 1.96086 6.58579 1.58579C6.96086 1.21071 7.46957 1 8 1H12C12.5304 1 13.0391 1.21071 13.4142 1.58579C13.7893 1.96086 14 2.46957 14 3V5M8 10V16M12 10V16" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                </td>
-            `;
+        orderTable.appendChild(tableRow);
 
-            orderTable.appendChild(tableRow);
-        }
+        // let key = localStorage.key(i);
+        // if (key.match(/^[0-9]*_.*$/)) {
+        //     let [_, cocktailName] = key.split('_');
+        //     let quantity = parseInt(localStorage.getItem(key) || 1);
+        //     cartSize += parseInt(quantity);
+
+        //     let tableRow = document.createElement('tr');
+
+        //     tableRow.innerHTML = `
+        //         <td>${cocktailName}</td>
+        //         <td class="text-right">
+        //             <div>
+        //                 <button class="${quantity == 1 ? 'muted' : ''} icon-only" onclick="removeCocktailQuantity('${key}')">
+        //                     <svg width="16" height="2" viewBox="0 0 16 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+        //                         <path d="M1 1H15" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        //                     </svg>
+        //                 </button>
+        //                 <p class="order-quantity">${quantity}</p>
+        //                 <button class="icon-only" onclick="addCocktailQuantity('${key}')">
+        //                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        //                         <path d="M8 1V15M1 8H15" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        //                     </svg>
+        //                 </button>
+        //             </div>
+        //         </td>
+        //         <td class="text-right">
+        //             <div>
+        //                 <button class="icon-only" onclick="removeCocktailFromOrder('${key}')">
+        //                     <svg width="24" height="24" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        //                         <path d="M1 5H3M3 5H19M3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H15C15.5304 21 16.0391 20.7893 16.4142 20.4142C16.7893 20.0391 17 19.5304 17 19V5M6 5V3C6 2.46957 6.21071 1.96086 6.58579 1.58579C6.96086 1.21071 7.46957 1 8 1H12C12.5304 1 13.0391 1.21071 13.4142 1.58579C13.7893 1.96086 14 2.46957 14 3V5M8 10V16M12 10V16" stroke="#FCF9FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        //                     </svg>
+        //                 </button>
+        //             </div>
+        //         </td>
+        //     `;
+
+        //     orderTable.appendChild(tableRow);
+        // }
     }
 
     cartSize == 0 ? document.querySelector(".cart-size").style.display = 'none' : document.querySelector(".cart-size").style.display = 'block';

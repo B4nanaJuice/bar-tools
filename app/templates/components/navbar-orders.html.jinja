@@ -1,0 +1,21 @@
+{% from 'components/order-status.html.jinja' import order_status %}
+
+{% macro navbar_orders() %}
+
+    <div class="navbar-orders">
+        <table class="table-dark"></table>
+
+        <div class="form-row">
+            <label for="order-name" class="order-name">
+                Nom :
+                <input type="text" id="order-name">
+            </label>
+            <button class="place-order" onclick="placeOrder();">Placer la commande</button>
+        </div>
+
+        <script src="{{ url_for('static', filename = 'cocktailOrder.js') }}"></script>
+
+        {{ order_status() }}
+    </div>
+
+{%- endmacro %}
