@@ -174,3 +174,18 @@ def update_ingredient_category():
         return jsonify({"message": "Quelque chose s'est mal passé..."}), 400
 
     return jsonify({"message": "La catégorie de l'ingrédient a bien été changée.", "category": category.name}), 200
+
+@page.get('/get-ingredients')
+def get_ingredients():
+    ingredients = Ingredient.query.order_by(Ingredient.name).all()
+    return jsonify({"ingredients": [_.to_dict() for _ in ingredients]}), 200
+
+@page.get('/get-ingredient-categories')
+def get_ingredient_categories():
+    categories = IngredientCategory.query.all()
+    return jsonify({"categories": [_.to_dict() for _ in categories]}), 200
+
+@page.get('/get-tags')
+def get_tags():
+    tags = Tag.query.order_by(Tag.name).all()
+    return jsonify({"tags": [_.to_dict() for _ in tags]}), 200

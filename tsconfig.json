@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ES2020",
+        "rootDir": "./app/static/ts",
+        "outDir": "./app/static/js",
+        "strict": true
+    },
+    "include": ["app/static/ts/**/*.ts"],
+    "exclude": ["node_modules"]
+}
