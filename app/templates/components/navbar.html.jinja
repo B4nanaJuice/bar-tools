@@ -1,7 +1,7 @@
 {% from 'components/navbar-orders.html.jinja' import navbar_orders %}
 {% from 'components/navbar-search.html.jinja' import navbar_search %}
 
-{% macro navbar(type = "basic", ingredients = [], tags = [], ingredient_categories = []) %}
+{% macro navbar(type = "basic") %}
 
     <div class="navbar">
         <div class="navbar-title">La niche</div>
@@ -37,7 +37,7 @@
 
         {% if type == "basic" %}
             
-            {{ navbar_search(ingredients, tags, ingredient_categories) }}
+            {{ navbar_search() }}
             {{ navbar_orders() }}
             
         {% endif %}

@@ -45,38 +45,6 @@ def send_order():
 
     return jsonify({"message": "Ta commande a bien été passée ! Tu recevras bientôt ce que tu as demandé.", "orderId": order.id}), 200
 
-@page.get('/get-order-status')
-def get_order_status():
-
-    try:
-        order_id = request.args.get("order-id")
-        order_id = int(order_id)
-
-        order = db.session.scalar(db.select(Order).where(Order.id == order_id))
-
-        if order is None:
-            return jsonify({"status": None}), 400
-
-        return jsonify({"status": order.status.state}), 200
-    except:
-        return jsonify({"status": None}), 400
-
-@page.get('/get-cocktail')
-def get_cocktail():
-
-    try:
-        cocktail_id = request.args.get("cocktail-id")
-        cocktail_id = int(cocktail_id)
-
-        cocktail = db.session.scalar(db.select(Cocktail).where(Cocktail.id == cocktail_id))
-
-        if cocktail is None:
-            return jsonify({"cocktail": None}), 400
-
-        return jsonify({"cocktail": cocktail.to_dict()}), 200
-    except:
-        return jsonify({"cocktail": None}), 400
-
 @page.post('/update-order-status')
 def update_order_stats() :
 
@@ -84,8 +52,9 @@ def update_order_stats() :
         return jsonify({"message": "Tu dois être connecté pour accéder à cette fonctionnalité."}), 401
 
     data = request.json
-    order_id = data['order_id']
+    order_id = data["order_id"]
     status = data["status"]
+
     order = db.session.scalar(db.select(Order).where(Order.id == order_id))
     status = db.session.scalar(db.select(OrderStatus).where(OrderStatus.state == status))
 
@@ -100,7 +69,7 @@ def update_order_stats() :
     except:
         return jsonify({"message": "Quelque chose s'est mal passé..."}), 400
 
-    return jsonify({"message": "Le statut de la commande a bien été changé.", "status": status.state}), 200
+    return jsonify({"message": "Le statut de la commande a bien été changé.", "state": status.state}), 200
 
 @page.post('/update-tag-color')
 def update_tag_color():
@@ -174,6 +143,38 @@ def update_ingredient_category():
         return jsonify({"message": "Quelque chose s'est mal passé..."}), 400
 
     return jsonify({"message": "La catégorie de l'ingrédient a bien été changée.", "category": category.name}), 200
+
+@page.get('/get-order-status')
+def get_order_status():
+
+    try:
+        order_id = request.args.get("order-id")
+        order_id = int(order_id)
+
+        order = db.session.scalar(db.select(Order).where(Order.id == order_id))
+
+        if order is None:
+            return jsonify({"state": None}), 400
+
+        return jsonify({"state": order.status.to_dict()}), 200
+    except:
+        return jsonify({"state": None}), 400
+
+@page.get('/get-cocktail')
+def get_cocktail():
+
+    try:
+        cocktail_id = request.args.get("cocktail-id")
+        cocktail_id = int(cocktail_id)
+
+        cocktail = db.session.scalar(db.select(Cocktail).where(Cocktail.id == cocktail_id))
+
+        if cocktail is None:
+            return jsonify({"cocktail": None}), 400
+
+        return jsonify({"cocktail": cocktail.to_dict()}), 200
+    except:
+        return jsonify({"cocktail": None}), 400
 
 @page.get('/get-ingredients')
 def get_ingredients():

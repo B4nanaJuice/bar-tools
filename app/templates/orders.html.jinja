@@ -22,6 +22,21 @@
         {{ popup() }}
         {{ navbar(type = "admin") }}
 
+        <script type="module">
+            import { showRecipe, updateOrderStatus } from "/static/js/admin.js";
+
+            window.showRecipe = showRecipe;
+            window.updateOrderStatus = updateOrderStatus;
+
+            Array.from(document.querySelectorAll('.show-order-description')).map((node) => {
+                node.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('can-open-description')) {
+                        node.querySelector('.order-description').classList.toggle('hidden');
+                    }
+                });
+            });
+        </script>
+
         <div class="hero">
             <div class="hero-content">
                 <button class="icon-only" onclick="this.parentElement.querySelector('table').classList.toggle('show-finished-orders')">Afficher les commandes terminées</button>
@@ -35,25 +50,28 @@
                         </th>
                     </tr>
                     {% for order in orders %}
-                        <tr class="{{ 'finished-order' if order.status.state == 'finished' else '' }}">
+                        <tr class="{{ 'finished-order' if order.status.state == 'finished' else '' }} order-{{order.id}}">
                             <td>
                                 <div class="table-column show-order-description can-open-description">
+
                                     <div class="table-row can-open-description">
-                                        <select name="order-status" id="order-status" onchange="updateOrderStatus(this, {{ order.id }})">
+                                        <select name="order-status" id="order-status" onchange="window.updateOrderStatus({{ order.id }}, this.value)">
                                             {% for state in ["new", "pending", "finished"] %}
                                                 <option value="{{state}}" {{ "selected" if order.status.state == state else "" }}>{{ state }}</option>
                                             {% endfor %}
                                         </select>
                                         <p class="can-open-description">{{ order.customer_name }}</p>
                                     </div>
+
                                     <div class="table-column order-description hidden">
                                         {% for item in order.items %}
-                                            <div class="table-row order-item" onclick='showRecipe({{ item.cocktail.id }})'>
+                                            <div class="table-row order-item" onclick='window.showRecipe({{ item.cocktail.id }})'>
                                                 <p>{{ item.cocktail.name }}</p>
                                                 <p>{{ item.quantity }}</p>
                                             </div>
                                         {% endfor %}
                                     </div>
+                                    
                                 </div>                            
                             </td>
                         </tr>
@@ -62,87 +80,6 @@
                 </table>
             </div>
         </div>
-
-        <script>
-            Array.from(document.querySelectorAll('.show-order-description')).map((node) => {
-                node.addEventListener('click', function (e) {
-                    if (e.target.classList.contains('can-open-description')) {
-                        node.querySelector('.order-description').classList.toggle('hidden');
-                    }
-                });
-            });
-
-            function showRecipe(cocktailId) {
-                (async () => {
-                    const rawResponse = await fetch(`/api/get-cocktail?cocktail-id=${cocktailId}`, {
-                        method: "GET",
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    const content = await rawResponse.json();
-
-                    if (rawResponse.status == 200) {
-                        document.querySelector('.popup-title').innerText = content.cocktail.name;
-                        document.querySelector('.popup-description').innerHTML = `
-                            <ul>
-                                ${content.cocktail.ingredients.map(ing => `<li>${ing.quantity} ${ing.unit} ${ing.name}</li>`).join('')}
-                            </ul>
-                        `;
-
-                        document.querySelector('.popup-content .primary-button').onclick = (e) => {
-                            addCocktailToOrder(content.cocktail.name, content.cocktail.id);
-                            document.querySelector('.popup').classList.remove('popup-open');
-                        }
-
-                        document.querySelector('.popup-content .primary-button p').innerText = "Terminé";
-
-                        document.querySelector('.popup').classList.add('popup-open');
-                    } else {
-                        createNotification("error", "Woops", "Quelque chose s'est mal passé...");
-                    }
-                })();
-            }
-
-            function updateOrderStatus(selectNode, orderId) {
-                (async () => {
-                    const rawResponse = await fetch('/api/update-order-status', {
-                        method: "POST",
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            "order_id": orderId,
-                            "status": selectNode.value
-                        })
-                    });
-
-                    const content = await rawResponse.json();
-
-                    if (rawResponse.status == 200) {
-                        createNotification("success", "Statut changé", content.message);
-                        switch (content.status) {
-                            case 'new':
-                                selectNode.parentElement.parentElement.parentElement.parentElement.classList.remove('finished-order');
-                                break;
-
-                            case 'pending':
-                                selectNode.parentElement.parentElement.parentElement.parentElement.classList.remove('finished-order');
-                                break;
-
-                            case 'finished':
-                                selectNode.parentElement.parentElement.parentElement.parentElement.classList.add('finished-order');
-                                break;
-                        }
-                    } else {
-                        createNotification("error", "Woops", content.message);
-                    }
-                })();
-            }
-        </script>
         
     </body>
 </html>

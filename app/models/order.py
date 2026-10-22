@@ -17,3 +17,12 @@ class Order(db.Model):
 
     def __repr__(self):
         return f"<Order {self.id} - {self.customer_name}>"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "customer_name": self.customer_name,
+            "created_at": self.created_at,
+            "items": [_.to_dict() for _ in self.items],
+            "status": self.status.to_dict()
+        }

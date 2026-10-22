@@ -1,5 +1,4 @@
-import { APIGet } from "./base.js";
-import { IngredientCategory, Ingredient, CocktailTag } from "./objects.js";
+import { APIGet, IngredientCategory, Ingredient, CocktailTag } from "./utils.js";
 
 export function addTagToSearch(tagType: 'ingredient' | 'tag') {
     let selectNode: HTMLSelectElement = <HTMLSelectElement>document.getElementById(`${tagType}-search-select`)!;
@@ -38,7 +37,7 @@ export function startSearch() {
     window.location.assign(target);
 }
 
-function loadIngredients() {
+export function loadIngredients() {
     (async () => {
         const ingredients: {status: number, ingredients: Array<Ingredient>} = await APIGet("/api/get-ingredients");
         const ingredientCategories: {status: number, categories: Array<IngredientCategory>} = await APIGet("/api/get-ingredient-categories");
@@ -52,9 +51,8 @@ function loadIngredients() {
             .join('');
     })();
 }
-loadIngredients();
 
-function loadTags() {
+export function loadTags() {
     (async () => {
         const tags: {status: number, tags: Array<CocktailTag>} = await APIGet("/api/get-tags");
 
@@ -63,4 +61,3 @@ function loadTags() {
             .join('');
     })();
 }
-loadTags();

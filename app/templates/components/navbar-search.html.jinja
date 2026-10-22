@@ -1,4 +1,14 @@
-{% macro navbar_search(ingredients = [], tags = [], ingredient_categories = []) %}
+{% macro navbar_search() %}
+
+    <script type="module">
+        import { addTagToSearch, startSearch, loadIngredients, loadTags } from '/static/js/navbar.js';
+        
+        window.addTagToSearch = addTagToSearch;
+        window.startSearch = startSearch;
+
+        loadIngredients();
+        loadTags();
+    </script>
 
     <div class="navbar-search">
         <div class="ingredient-search">
@@ -32,13 +42,6 @@
                 </svg>
             </button>
         </div>
-
-        <script type="module" src="{{ url_for('static', filename = 'js/navbar.js') }}"></script>
-        <script type="module">
-            import { addTagToSearch, startSearch } from './static/js/navbar.js';
-            window.addTagToSearch = addTagToSearch;
-            window.startSearch = startSearch;
-        </script>
     </div>
 
 {%- endmacro %}

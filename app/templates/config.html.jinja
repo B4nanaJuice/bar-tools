@@ -17,6 +17,14 @@
         {{ notifications() }}
         {{ navbar(type = "admin") }}
 
+        <script type="module">
+            import { updateIngredientCategory, updateIngredientColor, updateTagColor } from "/static/js/admin.js";
+
+            window.updateIngredientCategory = updateIngredientCategory;
+            window.updateIngredientColor = updateIngredientColor;
+            window.updateTagColor = updateTagColor;
+        </script>
+
         <div class="hero">
             <div class="hero-content">
                 
@@ -35,7 +43,7 @@
                                 </div>
                             </td>
                             <td class="text-right">
-                                <select name="" id="" onchange="updateIngredientCategory({{ ingredient.id }}, this.value);">
+                                <select name="" id="" onchange="window.updateIngredientCategory({{ ingredient.id }}, this.value);">
                                     
                                     {% for ingredient_category in ["spirit", "liquor", "juice", "syrup", "other"] %}
                                         <option value="{{ ingredient_category }}" {{ "selected" if ingredient.category.name == ingredient_category else "" }}>{{ ingredient_category }}</option>
@@ -43,7 +51,7 @@
                                 </select>
                             </td>
                             <td class="text-right">
-                                <input type="color" name="" id="" value="#{{ ingredient.color }}" onchange="updateIngredientColor({{ ingredient.id }}, this.value);" />
+                                <input type="color" name="" id="" value="#{{ ingredient.color }}" onchange="window.updateIngredientColor({{ ingredient.id }}, this.value);" />
                             </td>
                         </tr>
                     {% endfor %}
@@ -63,7 +71,7 @@
                                 </div>
                             </td>
                             <td class="text-right">
-                                <input type="color" name="" id="" value="#{{ tag.color }}" onchange="updateTagColor({{ tag.id }}, this.value);" />
+                                <input type="color" name="" id="" value="#{{ tag.color }}" onchange="window.updateTagColor({{ tag.id }}, this.value);" />
                             </td>
                         </tr>
                     {% endfor %}
@@ -72,80 +80,4 @@
             </div>
         </div>
     </body>
-
-    <script>
-        function updateIngredientCategory(ingredientId, category) {
-            (async () => {
-                const rawResponse = await fetch('/api/update-ingredient-category', {
-                    method: "POST",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "ingredient_id": ingredientId,
-                        "category": category
-                    })
-                });
-
-                const content = await rawResponse.json();
-
-                if (rawResponse.status == 200) {
-                    createNotification("success", "Catégorie changée", content.message);
-                } else {
-                    createNotification("error", "Woops", content.message);
-                }
-            })();
-        }
-
-        function updateIngredientColor(ingredientId, color) {
-            (async () => {
-                const rawResponse = await fetch('/api/update-ingredient-color', {
-                    method: "POST",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "ingredient_id": ingredientId,
-                        "color": color.replace("#", "")
-                    })
-                });
-
-                const content = await rawResponse.json();
-
-                if (rawResponse.status == 200) {
-                    createNotification("success", "Couleur changée", content.message);
-                    document.querySelector(`.pill-ingredient-${ingredientId}`).style.backgroundColor = `#${content.color}`;
-                } else {
-                    createNotification("error", "Woops", content.message);
-                }
-            })();
-        }
-
-        function updateTagColor(tagId, color) {
-            (async () => {
-                const rawResponse = await fetch('/api/update-tag-color', {
-                    method: "POST",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "tag_id": tagId,
-                        "color": color.replace("#", "")
-                    })
-                });
-
-                const content = await rawResponse.json();
-
-                if (rawResponse.status == 200) {
-                    createNotification("success", "Couleur changée", content.message);
-                    document.querySelector(`.pill-tag-${tagId}`).style.backgroundColor = `#${content.color}`;
-                } else {
-                    createNotification("error", "Woops", content.message);
-                }
-            })();
-        }
-    </script>
 </html>

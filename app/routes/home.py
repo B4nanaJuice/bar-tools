@@ -47,7 +47,3 @@ def index():
     ingredient_categories = IngredientCategory.query.all()
     
     return render_template("home.html.jinja", pagination = page, tags = tags, ingredients = ingredients, endpoint = request.endpoint, args = endpoint_args, ingredient_categories = ingredient_categories)
-
-@page.get("/order-status")
-def order_status():
-    return render_template("order-status.html.jinja")

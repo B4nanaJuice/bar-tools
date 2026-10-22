@@ -1,16 +1,23 @@
 {% macro popup() %}
 
+    <script type="module">
+        import { closePopup } from '/static/js/utils.js';
+        
+        window.closePopup = closePopup;
+    </script>
+
     <div class="popup">
+
         <div class="popup-content">
-            <button class="icon-only" onclick="document.querySelector('.popup').classList.remove('popup-open');">
+            <button class="icon-only" onclick="window.closePopup()">
                 <svg width="24" height="24" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
             <h1 class="popup-title">This is a title</h1>
-            <p class="popup-description">This is a description</p>
+            <p class="popup-body">This is a description</p>
             <div class="popup-row">
-                <button class="secondary-button" onclick="document.querySelector('.popup').classList.remove('popup-open');">
+                <button class="secondary-button" onclick="window.closePopup()">
                     Annuler
                     <svg width="24" height="24" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M25 1L1 25M1 1L25 25" stroke="#1B1107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -24,7 +31,7 @@
                 </button>
             </div>
         </div>
-        <div class="popup-background" onclick="document.querySelector('.popup').classList.remove('popup-open');"></div>
+        <div class="popup-background" onclick="window.closePopup()"></div>
     </div>
 
 {%- endmacro %}

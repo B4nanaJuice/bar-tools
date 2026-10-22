@@ -15,15 +15,19 @@
         <link rel="stylesheet" href="{{ url_for('static', filename = 'components.css') }}">
         <title>Cocktails - La niche</title>
     </head>
-    <body>        
-        <script src="{{ url_for('static', filename = 'cocktailCard.js') }}"></script>
+    <body>
+        <script type="module">
+            import { showCocktailDetails, refreshOrderTable } from "/static/js/order.js"
+
+            window.showCocktailDetails = showCocktailDetails;
+            refreshOrderTable();
+        </script>
 
         {{ notifications() }}
         {{ popup() }}
+        {{ navbar() }}
 
         <div class="hero">
-
-            {{ navbar(tags = tags, ingredients = ingredients, ingredient_categories = ingredient_categories) }}
 
             <div class="hero-content">
                 <h1 class="hero-title">Hero Section Title</h1>
@@ -73,13 +77,15 @@
                         <div class="cocktail-card">
                             {# <img src="{{ url_for('static', filename = f'img/{cocktail.name}.png') }}" width="128" height="128"> #}
                             <img src="" width="128" height="128">
-                            <h1 class="card-title"></h1>
-                            <script>
-                                var scriptTag = document.getElementsByTagName('script'); // Can't put 'let' or there will be "Redeclaration of let [...]"
-                                scriptTag = scriptTag[scriptTag.length - 1];
-                                generateCardTitle(scriptTag, {{ cocktail.name | tojson }})
+                            <h1 class="card-title">{{ cocktail.name }}</h1>
+                            <script type="module">
+                                import { generateCardTitle } from "/static/js/utils.js";
+
+                                var scriptTags = document.getElementsByTagName('script'); // Can't put 'let' or there will be "Redeclaration of let [...]"
+                                var target = scriptTags[scriptTags.length - 1].parentElement.querySelector('.card-title');
+                                generateCardTitle(target, {{ cocktail.name | tojson }});
                             </script>
-                            <button class="card-cta" onclick='showCocktailDetails({{ cocktail.id }})'>Détails</button>
+                            <button class="card-cta" onclick='window.showCocktailDetails({{ cocktail.id }})'>Détails</button>
                         </div>
                     {% endfor %}
 

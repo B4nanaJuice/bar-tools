@@ -2,6 +2,14 @@
 
 {% macro navbar_orders() %}
 
+    <script type="module">
+        import { placeOrder, addCocktailQuantity, removeCocktailFromOrder } from "/static/js/order.js";
+        
+        window.placeOrder = placeOrder;
+        window.addCocktailQuantity = addCocktailQuantity;
+        window.removeCocktailFromOrder = removeCocktailFromOrder;
+    </script>
+
     <div class="navbar-orders">
         <table class="table-dark"></table>
 
@@ -10,10 +18,8 @@
                 Nom :
                 <input type="text" id="order-name">
             </label>
-            <button class="place-order" onclick="placeOrder();">Placer la commande</button>
+            <button class="place-order" onclick="window.placeOrder();">Placer la commande</button>
         </div>
-
-        <script src="{{ url_for('static', filename = 'cocktailOrder.js') }}"></script>
 
         {{ order_status() }}
     </div>

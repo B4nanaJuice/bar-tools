@@ -15,3 +15,9 @@ class OrderStatus(db.Model):
 
     def __repr__(self):
         return f"<OrderStatus {self.state}>"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "state": self.state
+        }
