@@ -3,10 +3,12 @@ import os
 
 from app.cli import seed
 from app.database import init_db
+from app.rate_limiter import init_rate_limiter
 
 def create_app():
     app = Flask(__name__)
     init_db(app = app)
+    init_rate_limiter(app = app)
 
     app.secret_key = os.environ["APP_SECRET"]
 

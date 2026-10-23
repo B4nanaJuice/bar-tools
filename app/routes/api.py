@@ -1,4 +1,5 @@
-from flask import Blueprint, url_for, request, jsonify, session
+from flask import Blueprint, request, jsonify, session
+from flask_limiter.errors import RateLimitExceeded
 import os 
 import re
 
@@ -6,6 +7,10 @@ from app.database import db
 from app.models import Cocktail, Tag, Ingredient, Order, OrderItem, OrderStatus, IngredientCategory
 
 page = Blueprint("api", __name__, url_prefix = '/api')
+
+@page.errorhandler(429)
+def too_many_requests(e: RateLimitExceeded):
+    return jsonify({"message": "Too many requests"}), 429
 
 @page.post("/send-order")
 def send_order():
