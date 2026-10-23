@@ -79,8 +79,11 @@ table {
 
 /* FORM */
 input, select {
-    border: none;
-    background-color: none;
+    border: solid 2px var(--ghost-white);
+    background: var(--camel);
+    color: var(--coffee-bean);
+    padding: 8px 12px;
+    outline: none;
 }
 
 /* PROGRESS BAR */
