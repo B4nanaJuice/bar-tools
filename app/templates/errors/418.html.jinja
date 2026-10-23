@@ -1,0 +1,10 @@
+{% extends "errors/base.html.jinja" %}
+
+{% set error_code = 418 %}
+{% block title %}{{ error_code }}{% endblock %}
+
+{% block content %}
+    <h1 style="margin-bottom: 12px;">I'm a teapot</h1>
+    <p style="font-size:20px;">The requested entity body is short and stout.</p>
+    <p style="font-size:20px;">Tip me over and pour me out.</p>
+{% endblock %}

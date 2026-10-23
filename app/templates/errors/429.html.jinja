@@ -1,0 +1,10 @@
+{% extends "errors/base.html.jinja" %}
+
+{% set error_code = 429 %}
+{% block title %}{{ error_code }}{% endblock %}
+
+{% block content %}
+    <h1 style="margin-bottom: 12px;">Tu vas trop vite</h1>
+    <p style="font-size:20px;">Tu es en train de faire trop de requêtes en si peu de temps.</p>
+    <p style="font-size:20px;">Le serveur est tout petit, si tu continues, tu vas tout faire cramer.</p>
+{% endblock %}

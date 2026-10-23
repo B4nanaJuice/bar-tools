@@ -1,0 +1,10 @@
+{% extends "errors/base.html.jinja" %}
+
+{% set error_code = 401 %}
+{% block title %}{{ error_code }}{% endblock %}
+
+{% block content %}
+    <h1 style="margin-bottom: 12px;">Pris en flag</h1>
+    <p style="font-size:20px;">Où essayais-tu d'aller comme ça ? Tu as besoin d'une permission pour passer.</p>
+    <p style="font-size:20px;">Tu peux continuer de squatter ici mais je ne le laisserai pas traverser.</p>
+{% endblock %}

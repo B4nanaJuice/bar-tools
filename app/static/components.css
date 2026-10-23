@@ -100,3 +100,28 @@ input, select {
         transition: width 2s ease;
     }
 }
+
+/* BUTTONS */
+button {
+    padding: 8px 12px;
+    border: solid 2px var(--ghost-white);
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.primary {
+        background: var(--camel);
+        color: var(--coffee-bean);
+    }
+
+    &.secondary {
+        background: none;
+        color: var(--ghost-white);
+    }
+}
+
+/* LINKS */
+a {
+    text-decoration: none;
+}

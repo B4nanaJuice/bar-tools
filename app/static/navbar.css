@@ -8,11 +8,14 @@
     top: 48px;
     border: solid var(--ghost-white) 2px;
     background: var(--coffee-bean);
-    color: var(--ghost-white);
     position: fixed;
     z-index: 1;
     max-height: 70vh;
     overflow-y: scroll;
+
+    & * {
+        color: var(--ghost-white);
+    }
 
     & .navbar-title {
         text-align: center;

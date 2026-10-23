@@ -4,7 +4,9 @@
 {% macro navbar(type = "public") %}
 
     <div class="navbar">
-        <div class="navbar-title">La niche</div>
+        <div class="navbar-title">
+            <a href="{{ url_for('home.index') }}">La niche</a>
+        </div>
 
         <div class="right">
             {% if type == "admin" %}

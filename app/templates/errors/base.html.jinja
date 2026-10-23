@@ -1,0 +1,43 @@
+{% from 'components/navbar.html.jinja' import navbar %}
+
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        {% block head %}
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Woops ({% block title %}{% endblock %})</title>
+
+            <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename = 'navbar.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename = 'components.css') }}">
+            <style>
+                .hero-content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                }
+            </style>
+        {% endblock %}
+    </head>
+    <body>
+
+        {# page_type: "public" | "private" | "admin" #}
+        {{ navbar(type = "error") }} 
+
+        <div class="hero">
+            <div class="hero-content">
+                {% block content %}{% endblock %}
+                <button class="primary" style="font-size: 24px; width: 30%; margin: auto; margin-top: 24px;" onclick='window.location = "{{ url_for("home.index") }}";'>Revenir à la maison</button>
+            </div>
+
+            <div class="hero-background">
+                <p>{{ error_code }}</p>
+                <p>{{ error_code }}</p>
+                <p>{{ error_code }}</p>
+            </div>
+        </div>
+        
+    </body>
+</html>

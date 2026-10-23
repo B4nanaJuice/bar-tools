@@ -1,0 +1,10 @@
+{% extends "errors/base.html.jinja" %}
+
+{% set error_code = 404 %}
+{% block title %}{{ error_code }}{% endblock %}
+
+{% block content %}
+    <h1 style="margin-bottom: 12px;">Page introuvable</h1>
+    <p style="font-size:20px;">Woops, on dirait bien que tu t'es perdu(e). C'est tout calme ici...</p>
+    <p style="font-size:20px;">Tu peux soit rester ici pour profiter du silence ou bien revenir à la page d'accueil.</p>
+{% endblock %}
