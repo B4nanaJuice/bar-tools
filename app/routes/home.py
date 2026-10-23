@@ -37,13 +37,9 @@ def index():
         base_query = base_query.where(Cocktail.name.ilike(f'%{name.lower()}%'))
 
     page = db.paginate(base_query, per_page = 12)
-    tags = Tag.query.all()
-    ingredients = Ingredient.query.all()
 
     endpoint_args = request.args.to_dict()
     if "page" in endpoint_args:
         del endpoint_args["page"]
-
-    ingredient_categories = IngredientCategory.query.all()
     
-    return render_template("home.html.jinja", pagination = page, tags = tags, ingredients = ingredients, endpoint = request.endpoint, args = endpoint_args, ingredient_categories = ingredient_categories)
+    return render_template("home.html.jinja", pagination = page, endpoint = request.endpoint, args = endpoint_args, page_type = "public")

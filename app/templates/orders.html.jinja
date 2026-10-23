@@ -1,85 +1,69 @@
-{% from 'components/navbar.html.jinja' import navbar %}
-{% from 'components/footer.html.jinja' import footer %}
-{% from 'components/notifications.html.jinja' import notifications %}
-{% from 'components/popup.html.jinja' import popup %}
+{% extends "base.html.jinja" %}
 
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'navbar.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'popup.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'notification.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'admin.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'components.css') }}">
-        <title>Commandes - La niche</title>
-    </head>
-    <body>
+{% block title %}Commandes{% endblock %}
 
-        {{ notifications() }}
-        {{ popup() }}
-        {{ navbar(type = "admin") }}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'admin.css') }}">
+{% endblock %}
 
-        <script type="module">
-            import { showRecipe, updateOrderStatus } from "/static/js/admin.js";
+{% block content %}
+    <script type="module">
+        import { showRecipe, updateOrderStatus } from "/static/js/admin.js";
 
-            window.showRecipe = showRecipe;
-            window.updateOrderStatus = updateOrderStatus;
+        window.showRecipe = showRecipe;
+        window.updateOrderStatus = updateOrderStatus;
 
-            Array.from(document.querySelectorAll('.show-order-description')).map((node) => {
-                node.addEventListener('click', function (e) {
-                    if (e.target.classList.contains('can-open-description')) {
-                        node.querySelector('.order-description').classList.toggle('hidden');
-                    }
-                });
+        Array.from(document.querySelectorAll('.show-order-description')).map((node) => {
+            node.addEventListener('click', function (e) {
+                if (e.target.classList.contains('can-open-description')) {
+                    node.querySelector('.order-description').classList.toggle('hidden');
+                }
             });
-        </script>
+        });
+    </script>
 
-        <div class="hero">
-            <div class="hero-content">
-                <button class="icon-only" onclick="this.parentElement.querySelector('table').classList.toggle('show-finished-orders')">Afficher les commandes terminées</button>
-                <table>
-                    <tr>
-                        <th>
-                            <div class="table-row">
-                                <p>Statut</p>
-                                <p>Nom</p>
-                            </div>
-                        </th>
-                    </tr>
-                    {% for order in orders %}
-                        <tr class="{{ 'finished-order' if order.status.state == 'finished' else '' }} order-{{order.id}}">
-                            <td>
-                                <div class="table-column show-order-description can-open-description">
+    <div class="hero">
+        <div class="hero-content">
+            <button class="icon-only" onclick="this.parentElement.querySelector('table').classList.toggle('show-finished-orders')">Afficher les commandes terminées</button>
+            <table>
+                <tr>
+                    <th>
+                        <div class="table-row">
+                            <p>Statut</p>
+                            <p>Nom</p>
+                        </div>
+                    </th>
+                </tr>
+                {% for order in orders %}
+                    <tr class="{{ 'finished-order' if order.status.state == 'finished' else '' }} order-{{order.id}}">
+                        <td>
+                            <div class="table-column show-order-description can-open-description">
 
-                                    <div class="table-row can-open-description">
-                                        <select name="order-status" id="order-status" onchange="window.updateOrderStatus({{ order.id }}, this.value)">
-                                            {% for state in ["new", "pending", "finished"] %}
-                                                <option value="{{state}}" {{ "selected" if order.status.state == state else "" }}>{{ state }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <p class="can-open-description">{{ order.customer_name }}</p>
-                                    </div>
-
-                                    <div class="table-column order-description hidden">
-                                        {% for item in order.items %}
-                                            <div class="table-row order-item" onclick='window.showRecipe({{ item.cocktail.id }})'>
-                                                <p>{{ item.cocktail.name }}</p>
-                                                <p>{{ item.quantity }}</p>
-                                            </div>
+                                <div class="table-row can-open-description">
+                                    <select name="order-status" id="order-status" onchange="window.updateOrderStatus({{ order.id }}, this.value)">
+                                        {% for state in ["new", "pending", "finished"] %}
+                                            <option value="{{state}}" {{ "selected" if order.status.state == state else "" }}>{{ state }}</option>
                                         {% endfor %}
-                                    </div>
-                                    
-                                </div>                            
-                            </td>
-                        </tr>
+                                    </select>
+                                    <p class="can-open-description">{{ order.customer_name }}</p>
+                                </div>
 
-                    {% endfor %}
-                </table>
-            </div>
+                                <div class="table-column order-description hidden">
+                                    {% for item in order.items %}
+                                        <div class="table-row order-item" onclick='window.showRecipe({{ item.cocktail.id }})'>
+                                            <p>{{ item.cocktail.name }}</p>
+                                            <p>{{ item.quantity }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                
+                            </div>                            
+                        </td>
+                    </tr>
+
+                {% endfor %}
+            </table>
         </div>
-        
-    </body>
-</html>
+    </div>
+{% endblock %}

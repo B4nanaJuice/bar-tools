@@ -16,7 +16,7 @@ def get_orders():
 
     orders = Order.query.order_by(Order.id).all()
 
-    return render_template("orders.html.jinja", orders = orders)
+    return render_template("orders.html.jinja", orders = orders, page_type = "admin")
 
 @page.route("/stocks", methods = ["GET", "POST"])
 def manage_stocks():
@@ -29,7 +29,7 @@ def manage_stocks():
         db.session.commit()
         return redirect(url_for("admin.manage_stocks"))
 
-    return render_template("stocks.html.jinja", ingredients = ingredients)
+    return render_template("stocks.html.jinja", ingredients = ingredients, page_type = "admin")
 
 @page.get("/config")
 def config():
@@ -37,4 +37,4 @@ def config():
     ingredients = Ingredient.query.order_by(Ingredient.name).all()
     tags = Tag.query.order_by(Tag.name).all()
 
-    return render_template("config.html.jinja", ingredients = ingredients, tags = tags)
+    return render_template("config.html.jinja", ingredients = ingredients, tags = tags, page_type = "admin")

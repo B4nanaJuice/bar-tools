@@ -1,83 +1,68 @@
-{% from 'components/navbar.html.jinja' import navbar %}
-{% from 'components/notifications.html.jinja' import notifications %}
+{% extends "base.html.jinja" %}
 
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'navbar.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'notification.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename = 'components.css') }}">
-        <title>Commandes - La niche</title>
-    </head>
-    <body>
+{% block title %}Configuration{% endblock %}
 
-        {{ notifications() }}
-        {{ navbar(type = "admin") }}
+{% block content %}
+    <script type="module">
+        import { updateIngredientCategory, updateIngredientColor, updateTagColor } from "/static/js/admin.js";
 
-        <script type="module">
-            import { updateIngredientCategory, updateIngredientColor, updateTagColor } from "/static/js/admin.js";
+        window.updateIngredientCategory = updateIngredientCategory;
+        window.updateIngredientColor = updateIngredientColor;
+        window.updateTagColor = updateTagColor;
+    </script>
 
-            window.updateIngredientCategory = updateIngredientCategory;
-            window.updateIngredientColor = updateIngredientColor;
-            window.updateTagColor = updateTagColor;
-        </script>
-
-        <div class="hero">
-            <div class="hero-content">
-                
-                <h1>Ingrédients</h1>
-                <table class="table-dark" style="width: 100%;">
+    <div class="hero">
+        <div class="hero-content">
+            
+            <h1>Ingrédients</h1>
+            <table class="table-dark" style="width: 100%;">
+                <tr>
+                    <th style="width: 50%;">Ingrédient</th>
+                    <th class="text-right">Catégorie</th>
+                    <th class="text-right">Couleur</th>
+                </tr>
+                {% for ingredient in ingredients %}
                     <tr>
-                        <th style="width: 50%;">Ingrédient</th>
-                        <th class="text-right">Catégorie</th>
-                        <th class="text-right">Couleur</th>
+                        <td>
+                            <div class="pill-box">
+                                <span class="pill pill-ingredient-{{ingredient.id}}" style="background-color: #{{ ingredient.color }}">{{ ingredient.name }}</span>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <select name="" id="" onchange="window.updateIngredientCategory({{ ingredient.id }}, this.value);">
+                                
+                                {% for ingredient_category in ["spirit", "liquor", "juice", "syrup", "other"] %}
+                                    <option value="{{ ingredient_category }}" {{ "selected" if ingredient.category.name == ingredient_category else "" }}>{{ ingredient_category }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="text-right">
+                            <input type="color" name="" id="" value="#{{ ingredient.color }}" onchange="window.updateIngredientColor({{ ingredient.id }}, this.value);" />
+                        </td>
                     </tr>
-                    {% for ingredient in ingredients %}
-                        <tr>
-                            <td>
-                                <div class="pill-box">
-                                    <span class="pill pill-ingredient-{{ingredient.id}}" style="background-color: #{{ ingredient.color }}">{{ ingredient.name }}</span>
-                                </div>
-                            </td>
-                            <td class="text-right">
-                                <select name="" id="" onchange="window.updateIngredientCategory({{ ingredient.id }}, this.value);">
-                                    
-                                    {% for ingredient_category in ["spirit", "liquor", "juice", "syrup", "other"] %}
-                                        <option value="{{ ingredient_category }}" {{ "selected" if ingredient.category.name == ingredient_category else "" }}>{{ ingredient_category }}</option>
-                                    {% endfor %}
-                                </select>
-                            </td>
-                            <td class="text-right">
-                                <input type="color" name="" id="" value="#{{ ingredient.color }}" onchange="window.updateIngredientColor({{ ingredient.id }}, this.value);" />
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                {% endfor %}
+            </table>
 
-                <h1>Tags</h1>
-                <table class="table-dark" style="width: 100%;">
+            <h1>Tags</h1>
+            <table class="table-dark" style="width: 100%;">
+                <tr>
+                    <th>Tag</th>
+                    <th class="text-right">Couleur</th>
+                </tr>
+                {% for tag in tags %}
                     <tr>
-                        <th>Tag</th>
-                        <th class="text-right">Couleur</th>
+                        <td>
+                            <div class="pill-box">
+                                <span class="pill pill-tag-{{tag.id}}" style="background-color: #{{ tag.color }}">{{ tag.name }}</span>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <input type="color" name="" id="" value="#{{ tag.color }}" onchange="window.updateTagColor({{ tag.id }}, this.value);" />
+                        </td>
                     </tr>
-                    {% for tag in tags %}
-                        <tr>
-                            <td>
-                                <div class="pill-box">
-                                    <span class="pill pill-tag-{{tag.id}}" style="background-color: #{{ tag.color }}">{{ tag.name }}</span>
-                                </div>
-                            </td>
-                            <td class="text-right">
-                                <input type="color" name="" id="" value="#{{ tag.color }}" onchange="window.updateTagColor({{ tag.id }}, this.value);" />
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                {% endfor %}
+            </table>
 
-            </div>
         </div>
-    </body>
-</html>
+    </div>
+{% endblock %}

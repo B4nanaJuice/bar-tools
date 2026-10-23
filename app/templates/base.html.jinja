@@ -1,0 +1,33 @@
+{% from 'components/footer.html.jinja' import footer %}
+{% from 'components/notifications.html.jinja' import notifications %}
+{% from 'components/popup.html.jinja' import popup %}
+{% from 'components/navbar.html.jinja' import navbar %}
+
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        {% block head %}
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>{% block title %}{% endblock %} - La niche</title>
+
+            <link rel="stylesheet" href="{{ url_for('static', filename = 'base.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename = 'navbar.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename = 'notification.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename = 'popup.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename = 'components.css') }}">
+        {% endblock %}
+    </head>
+    <body>
+
+        {{ notifications() }}
+        {{ popup() }}
+        {# page_type: "public" | "private" | "admin" #}
+        {{ navbar(type = page_type) }} 
+
+        {% block content %}{% endblock %}
+
+        {{ footer() }}
+        
+    </body>
+</html>
