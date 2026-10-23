@@ -103,21 +103,30 @@ input, select {
 
 /* BUTTONS */
 button {
-    padding: 8px 12px;
-    border: solid 2px var(--ghost-white);
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
     &:hover {
         cursor: pointer;
+    }
+
+    &.muted:hover {
+        cursor: not-allowed;
     }
 
     &.primary {
         background: var(--camel);
         color: var(--coffee-bean);
+        padding: 8px 12px;
+        border: solid 2px var(--ghost-white);
     }
 
     &.secondary {
         background: none;
         color: var(--ghost-white);
+        padding: 8px 12px;
+        border: solid 2px var(--ghost-white);
     }
 }
 

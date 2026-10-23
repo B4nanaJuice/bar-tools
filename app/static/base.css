@@ -38,20 +38,6 @@ html {
     opacity: 0.1;
 }
 
-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-        cursor: pointer;
-    }
-
-    &.muted:hover {
-        cursor: not-allowed;
-    }
-}
-
 h1 {
     font-size: 48px;
 }
