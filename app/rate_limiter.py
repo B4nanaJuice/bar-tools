@@ -1,7 +1,7 @@
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-limiter: Limiter = Limiter(get_remote_address, default_limits = ["1/second"], storage_uri = "memory://")
+limiter: Limiter = Limiter(get_remote_address, default_limits = ["10/10 second"], storage_uri = "memory://")
 
 def init_rate_limiter(app):
 

@@ -36,7 +36,6 @@ export function addCocktailToOrder(cocktail: Cocktail) {
 }
 
 export function getCurrentOrder(): Array<OrderItem> {
-    console.log(localStorage.getItem("order"));
     return <Array<OrderItem>>JSON.parse(localStorage.getItem("order") || "[]");
 }
 
