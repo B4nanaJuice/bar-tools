@@ -11,13 +11,13 @@
     </script>
 
     <div class="navbar-orders">
-        <table class="table-dark"></table>
+        <table class="table-dark" style="margin: 24px auto;"></table>
 
-        <div class="form-row">
-            <label for="order-name" class="order-name">
-                Nom :
+        <div class="input-col order-form" style="row-gap: 24px;">
+            <div class="input-col">
+                <label for="order-name">Nom :</label>
                 <input type="text" id="order-name">
-            </label>
+            </div>
             <button class="place-order" onclick="window.placeOrder();">Placer la commande</button>
         </div>
 

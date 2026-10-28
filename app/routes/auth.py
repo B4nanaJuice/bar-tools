@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, request, session, redirect
+from flask import Blueprint, url_for, request, session, redirect, render_template
 import os
 
 page = Blueprint("auth", __name__, url_prefix = '/auth')
@@ -18,5 +18,11 @@ def login():
 
         session["id"] = user_login
         return redirect(url_for("admin.get_orders"))
-    
-    return "<form method=\"post\"><input name=\"id\" id=\"id\"><input name=\"password\" id=\"password\"><input type=\"submit\"></form>"
+
+    return render_template("login.html.jinja", page_type = "other")
+
+@page.get("/logout")
+def logout():
+    if "id" in session:
+        del session["id"]
+    return redirect(url_for("home.index"))

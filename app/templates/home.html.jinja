@@ -20,8 +20,10 @@
     <div class="hero">
 
         <div class="hero-content">
-            <h1 class="hero-title">Hero Section Title</h1>
-            <p class="hero-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            {# <h1 class="hero-title">Un titre ira ici (peut-être)</h1> #}
+            <h1 class="hero-title">Aller viens<br>on est bien</h1>
+            {# <p class="hero-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> #}
+            <p class="hero-description">Pose toi, tranquillement, et que tu sois ici pour te désaltérer ou découvrir, tu trouveras ton bonheur. <span style="opacity: 0.02;">Woof</span></p>
 
             <button class="hero-cta" onclick="window.scroll({top: document.querySelector('.body').getBoundingClientRect().top + window.scrollY, behavior: 'smooth'});">
                 Voir la carte 
@@ -32,16 +34,16 @@
 
             <div class="hero-stats">
                 <div class="stat">
-                    <p class="number">8+</p>
+                    <p class="number">{{ statistics["cocktail_count"] }}</p>
                     <p class="stat-desc">Cocktails</p>
                 </div>
                 <div class="stat">
-                    <p class="number">10+</p>
-                    <p class="stat-desc">Verres servis</p>
+                    <p class="number">{{ statistics["cocktail_ordered"] }}</p>
+                    <p class="stat-desc">Verres commandés</p>
                 </div>
                 <div class="stat">
-                    <p class="number">1</p>
-                    <p class="stat-desc">Client satisfait (moi)</p>
+                    <p class="number">{{ statistics["served_clients"] }}</p>
+                    <p class="stat-desc">Clients servis</p>
                 </div>
             </div>
         </div>

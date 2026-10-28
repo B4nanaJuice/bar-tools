@@ -6,6 +6,7 @@ export function addTagToSearch(tagType: 'ingredient' | 'tag') {
     let tag: HTMLSpanElement = document.createElement('span');
     tag.classList.add("pill");
     tag.id = selectNode.value;
+    tag.style.backgroundColor = <string>selectNode.options[selectNode.selectedIndex].getAttribute("data-color");
     tag.setAttribute("index", selectNode.selectedIndex.toString());
     tag.innerText = selectNode.options[selectNode.selectedIndex].text;
 
@@ -41,11 +42,18 @@ export function loadIngredients() {
     (async () => {
         const ingredients: {status: number, ingredients: Array<Ingredient>} = await APIGet("/api/get-ingredients");
         const ingredientCategories: {status: number, categories: Array<IngredientCategory>} = await APIGet("/api/get-ingredient-categories");
+        const categories: {[key: string]: string} = {
+            spirit: "Spiritueux",
+            liquor: "Crèmes & liqueurs",
+            juice: "Jus & bases fruits",
+            syrup: "Sirops",
+            other: "Autres"
+        };
 
         document.getElementById("ingredient-search-select")!.innerHTML += ingredientCategories.categories
-            .map((cat) => `<optgroup label="${cat.name}">${ingredients.ingredients
+            .map((cat) => `<optgroup label="${categories[cat.name]}">${ingredients.ingredients
                     .filter(ing => ing.category.id == cat.id)
-                    .map(ing => `<option value="${ing.id}">${ing.name}</option>`)
+                    .map(ing => `<option value="${ing.id}" data-color="${ing.color}">${ing.name}</option>`)
                     .join('')}
                 </optgroup>`)
             .join('');
@@ -57,7 +65,7 @@ export function loadTags() {
         const tags: {status: number, tags: Array<CocktailTag>} = await APIGet("/api/get-tags");
 
         document.getElementById("tag-search-select")!.innerHTML += tags.tags
-            .map((tag) => `<option value="${tag.id}">${tag.name}</option>`)
+            .map((tag) => `<option value="${tag.id}" data-color="${tag.color}">${tag.name}</option>`)
             .join('');
     })();
 }

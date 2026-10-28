@@ -10,7 +10,7 @@ export function showCocktailDetails(cocktailId: number) {
                 <div class="pill-box">
                     ${result.cocktail.tags.map(tag => `<span class="pill" style="background-color: ${tag.color}">${tag.name}</span>`).join('')}
                 </div>
-                <ul style="margin-top: 24px;">
+                <ul style="margin-top: 24px; margin-left: 24px; text-decoration: none; font-size: 20px;">
                     ${result.cocktail.ingredients.map(ing => `<li>${ing.name}</li>`).join('')}
                 </ul>
             `,
@@ -72,7 +72,7 @@ export function refreshOrderTable() {
 
     let orderSection: HTMLDivElement = <HTMLDivElement>document.querySelector('.navbar-orders');
     let orderTable: HTMLTableElement = <HTMLTableElement>orderSection.querySelector('table');
-    let orderForm: HTMLDivElement = <HTMLDivElement>orderSection.querySelector('.form-row');
+    let orderForm: HTMLDivElement = <HTMLDivElement>orderSection.querySelector('.order-form');
     let currentOrder: OrderItem[] = getCurrentOrder();
 
     orderTable.style.display = currentOrder.length == 0 ? 'none' : 'block';
@@ -126,8 +126,8 @@ export function refreshOrderTable() {
         });
 
         let quantityIndicator: HTMLParagraphElement = document.createElement('p');
-        quantityIndicator.style.width = '32px';
-        quantityIndicator.style.margin = '0 12px';
+        quantityIndicator.style.width = '1rem';
+        quantityIndicator.style.margin = '0 8px';
         quantityIndicator.style.textAlign = 'center';
         quantityIndicator.innerText = `${orderItem.quantity}`;
 
@@ -168,7 +168,7 @@ export function checkOrder(): boolean {
     let order: Array<OrderItem> = getCurrentOrder();
     if (order.length < 1) return false;
 
-    let name: string = (document.querySelector('.order-name input') as HTMLInputElement).value;
+    let name: string = (document.querySelector('#order-name') as HTMLInputElement).value;
     if (name.trim().length < 1) return false;
 
     return true;
@@ -178,28 +178,28 @@ export function placeOrder() {
     if (!checkOrder()) return;
 
     let order: Array<OrderItem> = getCurrentOrder();
-    let orderNameInput: HTMLInputElement = <HTMLInputElement>document.querySelector('.order-name input');
+    let orderNameInput: HTMLInputElement = <HTMLInputElement>document.querySelector('#order-name');
     createPopup(
         "Valider la commande ?",
         `
-            <ul>
-                ${order.map(o => `<li>${o.quantity} ${o.quantity}</li>`).join('')}
+            <ul style="margin: 24px; text-decoration: none; font-size: 20px;">
+                ${order.map(o => `<li>${o.quantity} ${o.cocktail.name}</li>`).join('')}
             </ul>
         `,
         "Valider",
         () => {(async () => {
             const result = await APIPost(
                 "/api/send-order",
-                {name: orderNameInput.value, order: order}
+                {name: orderNameInput.value, content: order.map(o => ({ cocktailId: o.cocktail.id, quantity: o.quantity }))}
             );
 
             successNotification("Commande passée !", "Ta commande a bien été validée !");
-            localStorage.setItem("Order", JSON.stringify([]));
+            localStorage.setItem("order", JSON.stringify([]));
             followNewOrder(result.orderId);
             document.querySelector('.navbar')!.classList.remove('navbar-for-orders');
             orderNameInput.value = '';
             refreshOrderTable();
-        })}
+        })()}
     );
 }
 
@@ -217,7 +217,7 @@ export function addOrderStatus(orderId: number) {
     let div: HTMLDivElement = <HTMLDivElement>document.createElement('div');
     div.classList.add(`order-${orderId}`);
     div.innerHTML = `
-        <h1 style="font-weight: 300; margin-top: 48px;">Commande n° ${orderId} : <span class="status-${orderId}" style="font-weight: 900;"></span></h1>
+        <p style="font-weight: 300; margin-top: 24px;">Commande n° ${orderId} : <span class="status-${orderId}" style="font-weight: 900;"></span></p>
         <div class="progress-bar progress-bar-${orderId}" style="width: 100%; margin: auto;">
             <div class="bar"></div>
         </div>

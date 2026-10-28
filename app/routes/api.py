@@ -15,31 +15,31 @@ def too_many_requests(e: RateLimitExceeded):
 @page.post("/send-order")
 def send_order():
 
-    data = request.json
+    data = request.json # {name: str, content: [{ cocktailId: int, quantity: int }]}
     customer_name: str = data["name"]
 
     order = Order(customer_name = customer_name)
     db.session.add(order)
     db.session.flush()
-    del data["name"]
 
-    for cocktail_id in data:
+    for order_item in data["content"]:
 
         try:
-            assert re.match(r'^[0-9]+$', cocktail_id), "Le cocktail demandé est invalide. Vérifie ton panier avant de recommencer."
-            cocktail_id = int(cocktail_id)
-            assert cocktail_id > 0, "Le cocktail demandé est invalide. Vérifie ton panier avant de recommencer."
+            cocktail_id = int(order_item["cocktailId"])
+            quantity: int = int(order_item["quantity"])
 
             cocktail = db.session.scalar(db.select(Cocktail).where(Cocktail.id == cocktail_id))
 
             if cocktail is None:
                 return jsonify({"message": "Le cocktail demandé est invalide. Vérifie ton panier avant de recommencer."}), 400
 
+            assert quantity > 0, "Quantité invalide. Vérifie ton panier avant de recommencer."
+
             db.session.add(
                 OrderItem(
                     order = order,
                     cocktail = cocktail,
-                    quantity = int(data[f"{cocktail_id}"])
+                    quantity = quantity
                 )
             )
 
@@ -183,7 +183,7 @@ def get_cocktail():
 
 @page.get('/get-ingredients')
 def get_ingredients():
-    ingredients = Ingredient.query.order_by(Ingredient.name).all()
+    ingredients = Ingredient.query.where(Ingredient.is_available).order_by(Ingredient.name).all()
     return jsonify({"ingredients": [_.to_dict() for _ in ingredients]}), 200
 
 @page.get('/get-ingredient-categories')

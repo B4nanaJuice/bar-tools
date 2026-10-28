@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, url_for, request
 from sqlalchemy import func
 
 from app.database import db
-from app.models import Cocktail, Tag, Ingredient, CocktailIngredient, CocktailTag, IngredientCategory
+from app.models import Cocktail, Ingredient, CocktailIngredient, CocktailTag, Order, OrderItem
 
 page = Blueprint("home", __name__)
 
@@ -41,5 +41,11 @@ def index():
     endpoint_args = request.args.to_dict()
     if "page" in endpoint_args:
         del endpoint_args["page"]
+
+    # Stats
+    stats = {}
+    stats["cocktail_count"] = len(Cocktail.query.all())
+    stats["cocktail_ordered"] = len(OrderItem.query.all())
+    stats["served_clients"] = Order.query.where(Order.status_id == 2).count()
     
-    return render_template("home.html.jinja", pagination = page, endpoint = request.endpoint, args = endpoint_args, page_type = "public")
+    return render_template("home.html.jinja", pagination = page, endpoint = request.endpoint, args = endpoint_args, page_type = "public", statistics = stats)

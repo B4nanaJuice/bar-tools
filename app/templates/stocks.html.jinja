@@ -11,15 +11,20 @@
     <div class="hero">
         <div class="hero-content">
             <form method="post">
-                {% for ingredient in ingredients %}
-                    <div class="input-checkbox">
-                        {% if ingredient.is_available %}
-                            <input type="checkbox" name="{{ ingredient.id }}" id="{{ ingredient.id }}" value="{{ ingredient.id }}" checked>
-                        {% else %}
-                            <input type="checkbox" name="{{ ingredient.id }}" id="{{ ingredient.id }}" value="{{ ingredient.id }}">
+                {% for category in ingredient_categories %}
+                    <h1>{{ category.name }}</h1>
+                    {% for ingredient in ingredients %}
+                        {% if ingredient.category.id == category.id %}
+                            <div class="input-checkbox">
+                                <input type="checkbox" 
+                                       name="{{ ingredient.id }}" 
+                                       id="{{ ingredient.id }}" 
+                                       value="{{ ingredient.id }}"
+                                       {{ "checked" if ingredient.is_available else "" }}>
+                                <label for="{{ ingredient.id }}">{{ ingredient.name }}</label>
+                            </div>
                         {% endif %}
-                        <label for="{{ ingredient.id }}">{{ ingredient.name }}</label>
-                    </div>
+                    {% endfor %}
                 {% endfor %}
                 <div style="width: 100%; margin-top: 32px; display: flex; justify-content: center;">
                     <input type="submit" value="Valider">

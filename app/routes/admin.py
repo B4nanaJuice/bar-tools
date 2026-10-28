@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, url_for, request, jsonify, session
 import os
 
 from app.database import db
-from app.models import Order, Ingredient, Tag
+from app.models import Order, Ingredient, Tag, IngredientCategory
 
 page = Blueprint("admin", __name__, url_prefix = '/admin')
 
@@ -22,6 +22,7 @@ def get_orders():
 def manage_stocks():
 
     ingredients: list[Ingredient] = Ingredient.query.order_by(Ingredient.name).all()
+    ingredient_categories: list[IngredientCategory] = IngredientCategory.query.all()
 
     if request.method == "POST":
         for ingredient in ingredients:
@@ -29,7 +30,7 @@ def manage_stocks():
         db.session.commit()
         return redirect(url_for("admin.manage_stocks"))
 
-    return render_template("stocks.html.jinja", ingredients = ingredients, page_type = "admin")
+    return render_template("stocks.html.jinja", ingredients = ingredients, ingredient_categories = ingredient_categories, page_type = "admin")
 
 @page.get("/config")
 def config():

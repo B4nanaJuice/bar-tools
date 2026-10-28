@@ -10,8 +10,6 @@
     background: var(--coffee-bean);
     position: fixed;
     z-index: 1;
-    max-height: 70vh;
-    overflow-y: scroll;
 
     & * {
         color: var(--ghost-white);
@@ -24,7 +22,7 @@
     & button {
         transition: transform .3s ease, opacity .3s ease;
 
-        &:hover {
+        &.icon-only:hover {
             transform: scale(1.1);
         }
     }
@@ -71,6 +69,7 @@
 
 @media screen and (max-width: 416px) {
     .navbar {
+        font-size: 24px;
         width: 90%;
         padding: 16px;
         top: 16px;
@@ -99,6 +98,8 @@
 /* NAVBAR FOR SEARCH */
 .navbar-search {
     display: none;
+    max-height: 60vh;
+    overflow-y: scroll;
 
     & > div {
         display: flex;
@@ -116,12 +117,13 @@
         appearance: none;
     }
 
-    & select, & input {
+    & select, & input, & select option, & select optgroup {
         height: 72px;
         font-size: 24px;
         padding: 0 24px;
         background: var(--camel);
         border: solid var(--ghost-white) 2px;
+        color: var(--coffee-bean);
         outline: none;
     }
 
@@ -208,59 +210,16 @@
 /* NAVBAR FOR CART */
 .navbar-orders {
     display: none;
+    max-height: 60vh;
+    overflow-y: scroll;
 
     & table {
         width: 80%;
-        margin: auto;
-        margin-top: 48px;
-        margin-bottom: 48px;
-        padding: 0 48px;
-        border-top: solid var(--ghost-white) 2px;
-        border-bottom: solid var(--ghost-white) 2px;
-        border-collapse: collapse;
-
-        & th, & td {
-            font-size: 24px;
-            padding: 16px 12px;
-            text-align: right;
-
-            &:first-child {
-                text-align: left;
-            }
-
-            & > div {
-                float: right;
-                display: flex;
-                flex-direction: row;
-            }
-
-            & button {
-                width: 24px;
-                height: 24px;
-            }
-
-            & .order-quantity {
-                margin: 0 12px;
-            }
-        }
-
-        & tr {
-            &:not(:first-child) {
-                border-top: solid var(--ghost-white) 2px;
-            }
-
-            &:nth-child(even) {
-                background: rgba(from var(--champagne-mist) r g b/.1);
-            }
-        }
     }
 
-    & .form-row {
-        display: flex;
-        flex-direction: row;
+    & .order-form {
         width: 80%;
         margin: auto;
-        justify-content: space-between;
 
         & .order-name {
             font-size: 32px;
@@ -300,19 +259,13 @@
 
 @media screen and (max-width: 416px) {
     .navbar-orders {
-        & table {
-            & th, & td {
-                font-size: 16px;
+        margin: 24px 0;
 
-                & button {
-                    width: 16px;
-                    height: 16px;
-                }
-            }
+        & table {
+            width: 100%;
         }
 
-        & .form-row {
-            flex-direction: column;
+        & .order-form {
             width: 90%;
 
             & .order-name {

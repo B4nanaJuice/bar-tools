@@ -37,6 +37,10 @@ table {
     border-bottom-width: 2px;
     margin: auto;
 
+    & * {
+        font-size: 24px;
+    }
+
     &.table-dark {
         color: var(--ghost-white);
         border-color: var(--ghost-white);
@@ -63,17 +67,37 @@ table {
     }
 
     & th, & td {
-        font-size: 24px;
         padding: 16px 12px;
-        text-align: left;
+        text-align: left;        
 
         &.text-right {
             text-align: right;
+
+            & > * {
+                display: flex;
+                flex-direction: row;
+                float: right;
+            }
         }
 
         &.text-center {
             text-align: center;
         }
+    }
+}
+
+@media screen and (max-width: 416px) {
+    table * {
+        font-size: 16px;
+    }
+
+    table svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    label {
+        font-size: 20px;
     }
 }
 
@@ -84,6 +108,24 @@ input, select {
     color: var(--coffee-bean);
     padding: 8px 12px;
     outline: none;
+}
+
+.input-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.input-col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+label {
+    font-size: 2rem;
+    font-family: var(--inria);
+    font-weight: 700;
 }
 
 /* PROGRESS BAR */
@@ -102,7 +144,7 @@ input, select {
 }
 
 /* BUTTONS */
-button {
+button, input[type="submit"] {
     display: flex;
     align-items: center;
     justify-content: center;

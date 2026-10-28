@@ -173,7 +173,9 @@ export function createPopup(title: string, body: string, actionLabel: string = "
     // Set popup action
     let popupAction: HTMLButtonElement = <HTMLButtonElement>popup.querySelector('.primary-button');
     popupAction.onclick = (e) => {
-        if (callback) callback();
+        if (callback) {
+            callback()
+        };
         closePopup();
     };
 

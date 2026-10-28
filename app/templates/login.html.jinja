@@ -1,0 +1,31 @@
+{% extends "base.html.jinja" %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <div class="hero">
+        <div class="hero-content">
+
+            <form method="post">
+                <div class="input-row">
+                    <div class="input-col" style="margin: 24px;">
+                        <label for="id">Identifiant</label>
+                        <input name="id" id="id" type="text">
+                    </div>
+                    
+                    <div class="input-col" style="margin: 24px;">
+                        <label for="password">Password</label>
+                        <input name="password" id="password" type="password">
+                    </div>
+                </div>
+                
+                <input type="submit" value="Valider" style="margin: auto; font-size: 1.5rem; width: 30%;" class="primary">
+            </form>
+            
+        </div>
+    </div>
+{% endblock %}
