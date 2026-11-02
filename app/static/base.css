@@ -200,6 +200,10 @@ h1 {
         position: relative;
         background: linear-gradient(180deg, var(--coffee-bean) 50%, var(--champagne-mist) 50%);
 
+        &:hover img {
+            transform: scale(1.1);
+        }
+
         & > img {
             width: 220px;
             height: 220px;
@@ -207,6 +211,11 @@ h1 {
             margin: 0 40px;
             margin-top: 40px;
             background: var(--ghost-white);
+            transition: transform .3s ease;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+
         }
 
         & .card-title {

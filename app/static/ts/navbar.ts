@@ -34,6 +34,7 @@ export function startSearch() {
     name != "" ? target.searchParams.set('name', name) : target.searchParams.delete('name');
 
     target.hash = "body";
+    (document.querySelector('.navbar') as HTMLDivElement).classList.remove('navbar-for-search');
 
     window.location.assign(target);
 }
@@ -69,3 +70,7 @@ export function loadTags() {
             .join('');
     })();
 }
+
+(document.querySelector('.name-search input') as HTMLInputElement).addEventListener("keypress", (e) => {
+    if (["Enter"].includes(e.key)) startSearch();
+});

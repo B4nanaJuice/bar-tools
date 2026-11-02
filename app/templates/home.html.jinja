@@ -21,9 +21,9 @@
 
         <div class="hero-content">
             {# <h1 class="hero-title">Un titre ira ici (peut-être)</h1> #}
-            <h1 class="hero-title">Aller viens<br>on est bien</h1>
+            <h1 class="hero-title">Allez viens<br>on est bien</h1>
             {# <p class="hero-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> #}
-            <p class="hero-description">Pose toi, tranquillement, et que tu sois ici pour te désaltérer ou découvrir, tu trouveras ton bonheur. <span style="opacity: 0.02;">Woof</span></p>
+            <p class="hero-description">Pose toi, tranquillement, et que tu sois ici pour te désaltérer ou découvrir, tu trouveras de tout. <span style="opacity: 0.02;">Woof</span></p>
 
             <button class="hero-cta" onclick="window.scroll({top: document.querySelector('.body').getBoundingClientRect().top + window.scrollY, behavior: 'smooth'});">
                 Voir la carte 
@@ -67,7 +67,7 @@
 
                 {% for cocktail in pagination %}
                     <div class="cocktail-card">
-                        <img src="{{ url_for('static', filename = 'img/' ~ cocktail.name | lower ~ '.png') }}" width="128" height="128">
+                        <img style="background-image: url({{ url_for('static', filename = 'img/' ~ cocktail.id ~ '.png') }});" width="128" height="128">
                         {# <img src="" width="128" height="128"> #}
                         <h1 class="card-title">{{ cocktail.name }}</h1>
                         <button class="card-cta" onclick='window.showCocktailDetails({{ cocktail.id }})'>Détails</button>

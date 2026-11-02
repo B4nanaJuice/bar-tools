@@ -1,4 +1,4 @@
-import { APIGet, createPopup, Cocktail, OrderItem, APIPost, successNotification, OrderStatus } from "./utils.js";
+import { APIGet, createPopup, Cocktail, OrderItem, APIPost, successNotification, OrderStatus, errorNotification } from "./utils.js";
 
 export function showCocktailDetails(cocktailId: number) {
     (async () => {
@@ -166,10 +166,16 @@ export function refreshOrderTable() {
 
 export function checkOrder(): boolean {
     let order: Array<OrderItem> = getCurrentOrder();
-    if (order.length < 1) return false;
+    if (order.length < 1) {
+        errorNotification("Ta commande est vide", "Tu dois sélectionner au moins une boisson");
+        return false;
+    }
 
     let name: string = (document.querySelector('#order-name') as HTMLInputElement).value;
-    if (name.trim().length < 1) return false;
+    if (name.trim().length < 1) {
+        errorNotification("Il manque un nom", "Pour pouvoir différencier ta commande de celle des autres");
+        return false;
+    }
 
     return true;
 }
@@ -196,7 +202,7 @@ export function placeOrder() {
             successNotification("Commande passée !", "Ta commande a bien été validée !");
             localStorage.setItem("order", JSON.stringify([]));
             followNewOrder(result.orderId);
-            document.querySelector('.navbar')!.classList.remove('navbar-for-orders');
+            // document.querySelector('.navbar')!.classList.remove('navbar-for-orders');
             orderNameInput.value = '';
             refreshOrderTable();
         })()}
@@ -212,13 +218,27 @@ function followNewOrder(orderId: number) {
     addOrderStatus(orderId);
 }
 
+export function removeOrderStatus(orderId: number) {
+    // Remove the div
+    let div: HTMLDivElement = <HTMLDivElement>document.querySelector(`.order-${orderId}`);
+    if (!div) return;
+    div.remove();
+    // Remove the order from the localStorage
+    let orders: Array<number> = JSON.parse(localStorage.getItem('orders') || "[]");
+    orders.splice(orders.indexOf(orderId), 1);
+    localStorage.setItem("orders", JSON.stringify(orders));
+}
+
 export function addOrderStatus(orderId: number) {
     // Add html elements to the navbar
     let div: HTMLDivElement = <HTMLDivElement>document.createElement('div');
     div.classList.add(`order-${orderId}`);
     div.innerHTML = `
-        <p style="font-weight: 300; margin-top: 24px;">Commande n° ${orderId} : <span class="status-${orderId}" style="font-weight: 900;"></span></p>
-        <div class="progress-bar progress-bar-${orderId}" style="width: 100%; margin: auto;">
+        <div class="input-row" style="margin-top: 24px;">
+            <button class="secondary" style="padding: 0 4px;" onclick="window.removeOrderStatus(${orderId})">Ne plus suivre</button>
+            <p style="font-weight: 300; margin-left: 12px;">Commande n° ${orderId} : <span class="status-${orderId}" style="font-weight: 900;"></span></p>
+        </div>
+        <div class="progress-bar progress-bar-${orderId}" style="width: 100%; margin: 12px auto;">
             <div class="bar"></div>
         </div>
     `;
