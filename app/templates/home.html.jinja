@@ -67,7 +67,8 @@
 
                 {% for cocktail in pagination %}
                     <div class="cocktail-card">
-                        <img style="background-image: url({{ url_for('static', filename = 'img/' ~ cocktail.id ~ '.png') }});" width="128" height="128">
+                        <img style="background-image: url('{{ cocktail.image }}');" width="128" height="128">
+                        {# <img src="data:image/png;base64, {{ cocktail.image }}" width="128" height="128"> #}
                         {# <img src="" width="128" height="128"> #}
                         <h1 class="card-title">{{ cocktail.name }}</h1>
                         <button class="card-cta" onclick='window.showCocktailDetails({{ cocktail.id }})'>Détails</button>

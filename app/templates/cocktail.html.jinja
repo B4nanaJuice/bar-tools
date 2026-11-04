@@ -1,0 +1,28 @@
+{% extends "base.html.jinja" %}
+
+{% block title %}{{ cocktail.name }}{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'admin.css') }}">
+{% endblock %}
+
+{% block content %}
+    <script type="module">
+        import { updateCocktailImage } from "/static/js/admin.js";
+
+        window.updateCocktailImage = updateCocktailImage;
+    </script>
+
+    <div class="hero">
+        <div class="hero-content">
+
+            <h1>Image actuelle :</h1>
+            <img src="{{ cocktail.image }}" alt="">
+
+            <input type="file" onchange="window.updateCocktailImage({{ cocktail.id }}, this.files[0]);">
+            <img class="image-preview">
+            
+        </div>
+    </div>
+{% endblock %}

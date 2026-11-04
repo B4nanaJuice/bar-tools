@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, url_for, request, jsonify, session, redirect
+from flask import Blueprint, render_template, url_for, request, jsonify, session, redirect, abort
 import os
 
 from app.database import db
-from app.models import Order, Ingredient, Tag, IngredientCategory
+from app.models import Order, Ingredient, Tag, IngredientCategory, Cocktail
 
 page = Blueprint("admin", __name__, url_prefix = '/admin')
 
@@ -39,3 +39,11 @@ def config():
     tags = Tag.query.order_by(Tag.name).all()
 
     return render_template("config.html.jinja", ingredients = ingredients, tags = tags, page_type = "admin")
+
+@page.get("/cocktail")
+def cocktail():
+
+    cocktail_id = request.args.get("cocktail-id", -1, type = int)
+    cocktail = Cocktail.query.get_or_404(cocktail_id)
+
+    return render_template("cocktail.html.jinja", cocktail = cocktail, page_type = "admin")

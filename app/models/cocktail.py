@@ -7,7 +7,7 @@ class Cocktail(db.Model):
 
     name = db.Column(db.String(150), nullable = False, unique = True)
     description = db.Column(db.Text, nullable = True)
-    image_url = db.Column(db.String(500), nullable = True)
+    image = db.Column(db.Text, nullable = True)
 
     ingredient_associations = db.relationship("CocktailIngredient", back_populates = "cocktail", cascade = "all, delete-orphan")
     tag_associations = db.relationship("CocktailTag", back_populates = "cocktail", cascade = "all, delete-orphan")
@@ -24,7 +24,7 @@ class Cocktail(db.Model):
             "id": self.id,
             "name": self.name,
             "description": self.description,
-            "image_url": self.image_url,
+            "image": self.image,
             "glass": self.glass.to_dict(),
 
             "ingredients": [_.to_dict() for _ in self.ingredient_associations],

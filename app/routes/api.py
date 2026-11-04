@@ -150,6 +150,29 @@ def update_ingredient_category():
 
     return jsonify({"message": "La catégorie de l'ingrédient a bien été changée.", "category": category.name}), 200
 
+@page.post('/update-cocktail-image')
+def update_cocktail_image():
+
+    if "id" not in session or session["id"] != os.environ["ADMIN_ID"]:
+        return jsonify({"message": "Tu dois être connecté pour accéder à cette fonctionnalité."}), 401
+
+    data = request.json
+    cocktail_id = data["cocktail_id"]
+    image = data["image"]
+    cocktail = db.session.scalar(db.select(Cocktail).where(Cocktail.id == cocktail_id))
+
+    if cocktail is None:
+        return jsonify({"message": "Aucun cocktail n'existe avec det ID."}), 400
+
+    try:
+        cocktail.image = image
+        db.session.commit()
+    except:
+        return jsonify({"message": "Quelque chose s'est mal passé..."}), 400
+
+    return jsonify({"message": "L'image du cocktail a bien été changée !", "image": image}), 200
+    
+
 @page.get('/get-order-status')
 def get_order_status():
 
