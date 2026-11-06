@@ -1,0 +1,32 @@
+{
+    "__config__": {
+        "__ingredient_categories__": ["spirit", "liquor", "juice", "syrup", "other"]
+    },
+    "ingredients": {
+        "Triple sec": {
+            "category": "liquor",
+            "color": "56789a"
+        }, "Sirop simple": {
+            "category": "syrup",
+            "color": "987687"
+        }, "Jus de citron vert": {
+            "category": "juice",
+            "color": "abdfce"
+        }, "Xérès": {
+            "category": "other",
+            "color": "98abfc"
+        }, "Tequila": {
+            "category": "spirit",
+            "color": "67ac5d"
+        }
+    },
+    "tags": {
+        "tag1": {
+            "color": "575679"
+        }, "tag2": {
+            "color": "fedabc"
+        }, "tag3": {
+            "color": "abdecf"
+        }
+    }
+}

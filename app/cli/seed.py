@@ -15,30 +15,29 @@ def seed(filename: str):
 
     # Add order status
     states = ["new", "pending", "finished"]
-    for i in range(len(states)):
+    for state_name in states:
         order_status = db.session.scalar(
-            db.select(OrderStatus).where(OrderStatus.id == i)
+            db.select(OrderStatus).where(OrderStatus.state == state_name)
         )
 
         if order_status is None:
-            db.session.add(OrderStatus(
-                id = i,
-                state = states[i]
-            ))
+            db.session.add(OrderStatus(state = state_name))
 
     # Add ingredient categories
-    # ingredient_categories = ["Spiritueux", "Crèmes - Liqueurs", "Jus", "Sirops", "Autres"]
-    ingredient_categories = ["spirit", "liquor", "juice", "syrup", "other"]
-    for i in range(len(ingredient_categories)):
-            ingredient_category = db.session.scalar(
-                db.select(IngredientCategory).where(IngredientCategory.id == i)
+    ingredient_categories_data = ["spirit", "liquor", "juice", "syrup", "other"]
+    ingredient_categories = {}
+    for category_name in ingredient_categories_data:
+        ingredient_category = db.session.scalar(
+            db.select(IngredientCategory).where(IngredientCategory.name == category_name)
+        )
+
+        if ingredient_category is None:
+            ingredient_category = IngredientCategory(
+                name = category_name
             )
-    
-            if ingredient_category is None:
-                db.session.add(IngredientCategory(
-                    id = i,
-                    name = ingredient_categories[i]
-                ))
+            db.session.add(ingredient_category)
+
+        ingredient_categories[category_name] = ingredient_category
 
     db.session.flush()
 
@@ -46,6 +45,14 @@ def seed(filename: str):
         data = json.load(fp = f)["cocktails"]
 
         click.echo(f"Loaded {len(data)} cocktails")
+
+    # LOADING CONFIG
+    with open(f"app/cli/config.json", mode = "r", encoding = "utf-8") as f:
+        config_data = json.load(fp = f)
+        config_ingredients = config_data["ingredients"]
+        config_tags = config_data["tags"]
+
+        click.echo(f"Loading config for {len(config_ingredients.keys())} ingredient{"s" if len(config_ingredients.keys()) != 1 else ""} and {len(config_tags.keys())} tag{"s" if len(config_tags.keys()) != 1 else ""}.")
 
     # Ingredients
     ingredients_data = [[ing[0] for ing in cocktail["ingredients"]] for cocktail in data]
@@ -59,7 +66,11 @@ def seed(filename: str):
         )
 
         if ingredient is None:
-            ingredient = Ingredient(name = name)
+            ingredient = Ingredient(
+                name = name,
+                color = (config_ingredients.get(name) or {}).get("color") or "ffffff",
+                category = ingredient_categories.get((config_ingredients.get(name) or {}).get("category")) or ingredient_categories["other"]
+            )
             db.session.add(ingredient)
 
         ingredients[name] = ingredient
@@ -75,7 +86,10 @@ def seed(filename: str):
         )
 
         if tag is None:
-            tag = Tag(name = name)
+            tag = Tag(
+                name = name,
+                color = (config_tags.get(name) or {}).get("color") or "ffffff"
+            )
             db.session.add(tag)
 
         tags[name] = tag
