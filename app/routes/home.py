@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, request
+from flask import Blueprint, render_template, request
 from sqlalchemy import func
 
 from app.database import db

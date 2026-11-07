@@ -196,7 +196,7 @@ export function placeOrder() {
         () => {(async () => {
             const result = await APIPost(
                 "/api/send-order",
-                {name: orderNameInput.value, content: order.map(o => ({ cocktailId: o.cocktail.id, quantity: o.quantity }))}
+                {name: orderNameInput.value, content: order.map(o => ({ cocktail_id: o.cocktail.id, quantity: o.quantity }))}
             );
 
             successNotification("Commande passée !", "Ta commande a bien été validée !");
