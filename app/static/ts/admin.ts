@@ -1,4 +1,4 @@
-import { APIGet, APIPost, Cocktail, createPopup, errorNotification, successNotification } from "./utils.js";
+import { APIGet, APIPost, Cocktail, createPopup, download, errorNotification, successNotification } from "./utils.js";
 
 // CONFIG
 export function updateIngredientCategory(ingredientId: number, category: string) {
@@ -144,5 +144,14 @@ export function updateCocktailImage(cocktailId: number, file: File) {
         let base64Image = await resizeImage(file);
         // Send base64 to API
         await sendImage(cocktailId, base64Image);
+    })();
+}
+
+export function exportConfig() {
+    (async () => {
+        const result: any = await APIGet('/api/export-config');
+        console.log(result);
+        delete result.status
+        download(JSON.stringify(result), "config.json");
     })();
 }

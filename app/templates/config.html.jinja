@@ -4,15 +4,18 @@
 
 {% block content %}
     <script type="module">
-        import { updateIngredientCategory, updateIngredientColor, updateTagColor } from "/static/js/admin.js";
+        import { updateIngredientCategory, updateIngredientColor, updateTagColor, exportConfig } from "/static/js/admin.js";
 
         window.updateIngredientCategory = updateIngredientCategory;
         window.updateIngredientColor = updateIngredientColor;
         window.updateTagColor = updateTagColor;
+        window.exportConfig = exportConfig;
     </script>
 
     <div class="hero">
         <div class="hero-content">
+
+            <button class="primary" onclick="window.exportConfig();">Exporter les données</button>
             
             <h1>Ingrédients</h1>
             <table class="table-dark" style="width: 100%;">

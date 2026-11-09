@@ -1,7 +1,8 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, send_file
 from flask_limiter.errors import RateLimitExceeded
 import os 
 import re
+import json
 from functools import wraps
 
 from app.database import db
@@ -100,7 +101,7 @@ def send_order():
 @page.post('/update-order-status')
 @body_format_required({"order_id": int, "status": str})
 @admin_required
-def update_order_stats() :
+def update_order_status() :
 
     data = request.json
     order_id = data.get("order_id")
@@ -260,3 +261,26 @@ def get_ingredient_categories():
 def get_tags():
     tags = Tag.query.order_by(Tag.name).all()
     return jsonify({"tags": [_.to_dict() for _ in tags]}), 200
+
+@page.get('/export-config')
+@admin_required
+def export_config():
+
+    # Get data
+    ingredients: list[Ingredient] = Ingredient.query.all()
+    tags: list[Tag] = Tag.query.all()
+
+    # Create file
+    from datetime import datetime
+    filename: str = f"app/exports/config_{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.json"
+    with open(filename, mode = "w", encoding = "utf-8") as fp:
+        fp.write(
+            json.dumps(
+                obj = {
+                    "ingredients": {ingredient.name: {"color": ingredient.color, "category": ingredient.category.name} for ingredient in ingredients},
+                    "tags": {tag.name: {"color": tag.color} for tag in tags}
+                }
+            )
+        )
+    fp = open(filename, mode = "r+b")
+    return send_file(fp, "application/json", as_attachment = True, download_name = "config.json")

@@ -209,3 +209,13 @@ export function generateCardTitle(node: HTMLElement, content: string) {
 
     node.style.fontSize = `${fontSize}px`;
 }
+
+// Document download
+export function download(content: string, filename: string, contentType: string = "application/json")
+{
+    let a: HTMLAnchorElement = document.createElement('a');
+    const blob: Blob = new Blob([content], {'type':contentType});
+    a.href = window.URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+}

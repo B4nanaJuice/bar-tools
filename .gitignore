@@ -11,5 +11,3 @@ instance/
 app/cli/seed*
 
 node_modules/
-
-tests/
